@@ -1,8 +1,22 @@
 " =======================================
-" Who: Jeremy Mack (@mutewinter)
-" What: .vimrc of champions
+" Who: Jared Cugno based on Vim of Champions by Jeremy Mack 
+" What: .vimrc
 " Version: 1.0 (this may never change because who versions dot files,
 " honestly)
+"" From prev config
+" :set formatoptions=qroctn2
+" set wildmode=list:longest,full
+" set pastetoggle=<Ins>
+" " Folding commands (normal mode only
+	" ,,l = loadview; ,,m = mkview
+" :set viewdir=$HOME/.vim.view/
+"	:autocmd BufWrite * mkview!
+" :autocmd BufWinEnter *.* silent loadview
+" set highlight=lub
+" Repair weird terminal/vim settings
+" :set backspace=start,eol,indent
+" Todo: Needs TagList plugin and Gundo
+
 " =======================================
 
 " ----------------------------------------
@@ -29,13 +43,17 @@ Bundle 'wincent/Command-T'
 Bundle 'spiiph/vim-space'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mutewinter/LustyJuggler'
+Bundle 'Gundo'
 " UI Additions
-Bundle 'mutewinter/vim-indent-guides'
 Bundle 'dickeytk/status.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'mutewinter/ir_black_mod'
 Bundle 'godlygeek/csapprox'
 Bundle 'Rykka/ColorV'
+Bundle 'taglist.vim'
+Bundle 'all-colors-pack'
+Bundle 'spf13/vim-colors'
+
 " OS Integration
 Bundle 'mkitt/browser-refresh.vim'
 " Commands
@@ -46,7 +64,6 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 Bundle 'mileszs/ack.vim'
 " Automatic Helpers
-Bundle 'IndexedSearch'
 Bundle 'xolox/vim-session'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
@@ -60,6 +77,7 @@ Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "snipmate-snippets"
 " Language Additions
+Bundle 'spf13/PIV'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'msanders/cocoa.vim'
 Bundle 'tpope/vim-haml'
@@ -110,12 +128,14 @@ endif
 " Color
 " ---------------
 set background=dark
+set t_Co=256 " Ensure we have full spectrum of colors
+set colorcolumn=80
 
 " Conditionally Set colorscheme
 if has('unix') && !has('gui_macvim')
   if $TERM == 'xterm-256color'
     " Neato, 256 color terminal. We can use ir_black_mod
-    colorscheme ir_black_mod
+    colorscheme molokai
   else
     " We can't use ir_black_mod :(
     let g:CSApprox_verbose_level=0
@@ -123,7 +143,7 @@ if has('unix') && !has('gui_macvim')
   endif
 else
   " We're good if not on unix or in MacVim
-  colorscheme ir_black_mod
+  colorscheme molokai
 endif
 
 " ---------------
@@ -141,6 +161,8 @@ set nu  " Line numbers on
 set nowrap  " Line wrapping off
 set laststatus=2  " Always show the statusline
 set cmdheight=2
+set relativenumber " I think I like these more still but it may not exist
+
 
 " ---------------
 " Behaviors
@@ -149,25 +171,47 @@ syntax enable
 set autoread           " Automatically reload changes if detected
 set wildmenu           " Turn on WiLd menu
 set hidden             " Change buffer - without saving
-set history=768        " Number of things to remember in history.
+set history=1000        " Number of things to remember in history.
 set cf                 " Enable error files & error jumping.
 set clipboard+=unnamed " Yanks go on clipboard instead.
 set autowrite          " Writes on make/shell commands
 set timeoutlen=250     " Time to wait for a command (after leader for example)
 set foldlevelstart=99  " Remove folds
 set formatoptions=crql
+set nofoldenable
+
+" Use viminfo
+set viminfo='100,f1,\"1000,:100,/100,h,%
+
+" Remember settings between sessions
+set viminfo='400,f1,"500,h,/100,:100,<500
+
+let bash_is_sh=1 " this makes CLI integration better.
 
 " ---------------
 " Text Format
 " ---------------
 set tabstop=2
-set backspace=2 " Delete everything with backspace
+set softtabstop=2
+set shiftwidth=2
+set textwidth=0
 set shiftwidth=2  " Tabs under smart indent
 set cindent
-set autoindent
-set smarttab
-set expandtab
+set noexpandtab
 set backspace=2
+set encoding=utf-8
+
+" Added 2005-03-23 Based on http://www.perlmonks.org/index.pl?node_id=441738
+:set smarttab
+:set shiftround
+:set autoindent
+:set smartindent
+
+" ---------------
+"  Modelines
+" ---------------
+set modeline
+set modelines=4
 
 " ---------------
 " Searching
@@ -195,6 +239,14 @@ set t_vb=
 " ---------------
 set mousehide  " Hide mouse after chars typed
 set mouse=a  " Mouse in all modes
+set mousemodel=extend " Allow better terminal/mouse integration
+
+" ---------------
+" Scolling
+" ---------------
+set scrolljump=5
+set scrolloff=3
+
 
 " Better complete options to speed it up
 set complete=.,w,b,u,U
@@ -212,8 +264,6 @@ nmap <silent> <C-l> :wincmd l<CR>
 " Fixes common typos
 command W w
 command Q q
-map <F1> <Esc>
-imap <F1> <Esc>
 
 " Removes doc lookup binding because it's easy to fat finger
 nmap K k
@@ -222,12 +272,67 @@ vmap K k
 " Make line completion easier
 imap <C-l> <C-x><C-l>
 
+" Similarly, : takes two keystrokes, ; takes one; map the latter to the former
+" in normal mode to get to the commandline faster
+nnoremap ; :
+
+" Wrapped lines goes down/up to next row, rather than next line in file.
+nnoremap j gj
+nnoremap k gk
+
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv 
+
+" For when you forget to sudo.. Really Write the file.
+cmap w!! w !sudo tee % >/dev/null
+
+" This is for mouse scrolling (primarily in GVIM)
+:map <M-Esc>[62~ <MouseDown>
+:map! <M-Esc>[62~ <MouseDown>
+:map <M-Esc>[63~ <MouseUp>
+:map! <M-Esc>[63~ <MouseUp>
+:map <M-Esc>[64~ <S-MouseDown>
+:map! <M-Esc>[64~ <S-MouseDown>
+:map <M-Esc>[65~ <S-MouseUp>
+:map! <M-Esc>[65~ <S-MouseUp>
+
+" Turn on "very magic" regex status by default for searches.
+" :he /magic for more information
+nnoremap / /\v
+vnoremap / /\v
+
+" Keybindings for movement in insert mode
+imap <Leader>0 <Esc>I
+imap <Leader>$ <Esc>A
+imap <Leader>h <Esc>i
+imap <Leader>l <Esc>lli
+imap <Leader>j <Esc>lji
+imap <Leader>k <Esc>lki
+
+" Tab options (as in Vim GUI Tabs)
+" <C-t> Opens a new tab
+" Remember, gt goes to next tab, gT goes to previous; easier than using firefox
+" control sequences
+:nmap <C-t> :tabnew<CR>
+:imap <C-t> <ESC>:tabnew<CR>
+" :nmap <s-t> :tabclose<CR>
+" :imap <C-> <ESC>:tabclose<CR>
+
+" Map <leader>f to split horizontally, and move to bottom window
+nnoremap <Leader>f <C-w>v<C-w>l
+
+
 " ---------------
 " Leader
 " ---------------
 
 " Set leader to ,
 let mapleader=","
+
+" The escape key is a long ways away. This maps it to the sequence ';;'
+:map! jj <esc>
+
 
 nmap <silent> <leader>s :set spell!<CR>
 nmap <silent> <leader>v :e ~/.vim/vimrc<CR>
@@ -313,6 +418,11 @@ end
 " ---------------
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
+let g:syntastic_auto_jump=1
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 " Platform-specific config files
 if has('win32') || has('win64')
@@ -347,6 +457,14 @@ nnoremap <leader>nc :NERDTreeClose<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2 " Change the NERDTree directory to the root node
+let NERDChristmasTree=1
+let NERDTreeCaseSensitiveSort=1
+let NERDTreeChDirMode=2
+let NERDTreeBookmarksFile = $HOME . "/.NERDTreeBookmarks"
+let NERDTreeShowBookmarks=1
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
+
 
 " ---------------
 " Hex Highlight
@@ -357,7 +475,44 @@ nnoremap <leader>h :HexHighlight<CR>
 " ---------------
 " Command T
 " ---------------
-nnoremap <silent><C-t> :CommandT<CR>
+nnoremap <Leader>t :CommandT<CR>
+
+" ---------------
+" Tags
+" ---------------
+:set tags=$HOME/.vim.tags/
+" Load a tag file
+" Loads a tag file from ~/.vim.tags/, based on the argument provided. The
+" command "Ltag"" is mapped to this function.
+:function! LoadTags(file)
+:   let tagspath = $HOME . "/.vim.tags/" . a:file
+:   let tagcommand = 'set tags+=' . tagspath
+:   execute tagcommand
+:endfunction
+:command! -nargs=1 Ltag :call LoadTags("<args>")
+
+" These are tag files I've created; you may want to remove/change these for your
+" own usage.
+:call LoadTags("zf1")
+:call LoadTags("pms-zend")
+:call LoadTags("pms-dev")
+:call LoadTags("buzz_cms")
+
+" TagList options
+
+nnoremap <silent> <F2> :TlistToggle<CR>
+
+let Tlist_Use_Right_Window = 0
+let Tlist_Compact_Format = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_GainFocus_On_ToggleOpen = 1
+let Tlist_File_Fild_Auto_Close = 1
+let Tlist_Inc_Winwidth = 0
+let Tlist_Close_On_Select = 1
+let Tlist_Process_File_Always = 1
+let Tlist_Display_Prototype = 0
+let Tlist_Display_Tag_Scope = 1
+
 
 " ---------------
 " Indent Guides
@@ -440,6 +595,18 @@ nmap <Leader>bi :BundleInstall<CR>
 nmap <Leader>bi! :BundleInstall!<CR>
 nmap <Leader>bu :BundleInstall!<CR> " Because this also updates
 nmap <Leader>bc :BundleClean<CR>
+
+" ---------------
+" Ack
+" ---------------
+set grepprg=ack\ -a
+let g:ackprg="ack -H --nocolor --nogroup --column"
+
+" ---------------
+" snipMate
+" ---------------
+let g:snips_author = "Jared Cugno"
+
 
 " ----------------------------------------
 " Functions
@@ -550,3 +717,87 @@ endfunction
 
 command! QuickSpellingFix call QuickSpellingFix()
 nmap <silent> <leader>z :QuickSpellingFix<CR>
+
+" put all this in your .vimrc or a plugin file. This seems to allow you to set
+	" the same tab / space options in a file. Use with caution?
+	command! -nargs=* Stab call Stab()
+	function! Stab()
+		let l:tabstop = 1 * input('set shiftwidth=')
+
+		if l:tabstop > 0
+			" do we want expandtab as well?
+			let l:expandtab = confirm('set expandtab?', "&Yes\n&No\n&Cancel")
+			if l:expandtab == 3
+				" abort?
+				return
+			endif
+
+			let &l:sts = l:tabstop
+			let &l:ts = l:tabstop
+			let &l:sw = l:tabstop
+
+			if l:expandtab == 1
+				setlocal expandtab
+			else
+				setlocal noexpandtab
+			endif
+		endif
+
+		" show the selected options
+		try
+			echohl ModeMsg
+			echon 'set tabstop='
+			echohl Question
+			echon &l:ts
+			echohl ModeMsg
+			echon ' shiftwidth='
+			echohl Question
+			echon &l:sw
+			echohl ModeMsg
+			echon ' sts='
+			echohl Question
+			echon &l:sts . ' ' . (&l:et ? '  ' : 'no')
+			echohl ModeMsg
+			echon 'expandtab'
+		finally
+			echohl None
+		endtry
+	endfunction
+
+" Languages {
+
+	" PHP syntax settings
+	:let php_sql_query=1
+	:let php_htmlInStrings=1
+	:let php_folding=1
+	:let php_parent_error_close=1
+	:let php_parent_error_open=1
+	:let php_noShortTags=0
+
+	" Run file with Ruby interpreter
+	:autocmd FileType ruby noremap <C-M> :w!<CR>:!ruby %<CR>
+
+	" JSLint (CTRL-L when in a JS file)
+	:autocmd FileType javascript noremap <C-L> :!jshint %<CR>
+
+	" Skeleton (template) files...
+	:autocmd BufNewFile *.html 0r $HOME/.vim/skeleton.html
+
+	" Note: The "normal" command afterwards deletes an ugly pending line and moves
+	" the cursor to the middle of the file.
+	autocmd BufNewFile *.php 0r ~/.vim/skeleton.php | normal Gdd
+
+	" syntax highlight pod in perl scripts
+	let perl_include_pod=1
+	let perl_extended_vars=1
+	let perl_fold=1
+	let perl_fold_blocks=1
+
+	" .inc, phpt, phtml, phps files as PHP
+	:autocmd BufNewFile,BufRead *.inc set ft=php
+	:autocmd BufNewFile,BufRead *.phpt set ft=php
+	:autocmd BufNewFile,BufRead *.phtml set ft=php
+	:autocmd BufNewFile,BufRead *.phps set ft=php
+
+" }
+
