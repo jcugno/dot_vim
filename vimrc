@@ -137,7 +137,9 @@ if has('unix') && !has('gui_macvim')
     colorscheme molokai
   else
     " We can't use ir_black_mod :(
-    let g:CSApprox_verbose_level=0
+    set term=xterm
+		set t_Co=256
+		let g:CSApprox_verbose_level=0
     colorscheme molokai
   endif
 else
@@ -598,8 +600,8 @@ nmap <Leader>bc :BundleClean<CR>
 " ---------------
 " Ack
 " ---------------
-set grepprg=ack\ -a
-let g:ackprg="ack -H --nocolor --nogroup --column"
+:set grepprg=ack\ -a
+:let g:ackprg="ack -H --nocolor --nogroup"
 
 " ---------------
 " snipMate
@@ -768,10 +770,12 @@ nmap <silent> <leader>z :QuickSpellingFix<CR>
 	" PHP syntax settings
 	:let php_sql_query=1
 	:let php_htmlInStrings=1
-	:let php_folding=1
+	:let php_folding=0
 	:let php_parent_error_close=1
 	:let php_parent_error_open=1
 	:let php_noShortTags=0
+	:let g:DisableAutoPHPFolding = 1
+
 
 	" Run file with Ruby interpreter
 	:autocmd FileType ruby noremap <C-M> :w!<CR>:!ruby %<CR>
