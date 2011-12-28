@@ -138,7 +138,7 @@ if has('unix') && !has('gui_macvim')
   else
     " We can't use ir_black_mod :(
     let g:CSApprox_verbose_level=0
-    colorscheme slate
+    colorscheme molokai
   endif
 else
   " We're good if not on unix or in MacVim
