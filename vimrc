@@ -51,7 +51,7 @@ Bundle 'mutewinter/ir_black_mod'
 Bundle 'godlygeek/csapprox'
 Bundle 'Rykka/ColorV'
 Bundle 'taglist.vim'
-Bundle 'all-colors-pack'
+Bundle 'jcugno/all-colors-pack'
 Bundle 'spf13/vim-colors'
 
 " OS Integration
@@ -77,7 +77,7 @@ Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
 Bundle "snipmate-snippets"
 " Language Additions
-Bundle 'spf13/PIV'
+Bundle 'jcugno/PIV'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'msanders/cocoa.vim'
 Bundle 'tpope/vim-haml'
