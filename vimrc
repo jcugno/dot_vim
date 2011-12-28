@@ -52,7 +52,6 @@ Bundle 'godlygeek/csapprox'
 Bundle 'Rykka/ColorV'
 Bundle 'taglist.vim'
 Bundle 'jcugno/all-colors-pack'
-Bundle 'spf13/vim-colors'
 
 " OS Integration
 Bundle 'mkitt/browser-refresh.vim'
