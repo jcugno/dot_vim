@@ -89,6 +89,9 @@ Bundle 'leshill/vim-json'
 " Libraries
 Bundle 'L9'
 Bundle 'tpope/vim-repeat'
+" Debugging
+Bundle 'DBGp-Remote-Debugger-Interface'
+
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
 
