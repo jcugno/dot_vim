@@ -8,7 +8,7 @@
 :set guifont=Bitstream\ Vera\ Sans\ Mono:h11
 :set lines=55
 :set columns=127
-:set transparency=10
+:set transparency=2
 
 " Power mgmt savings -- turn off blinking cursor
 let &guicursor = &guicursor . ",a:blinkon0"

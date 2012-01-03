@@ -291,6 +291,9 @@ vnoremap > >gv
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
 
+" SVN blame for visual selection
+vmap gl :<C-U>!svn blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
+
 " This is for mouse scrolling (primarily in GVIM)
 :map <M-Esc>[62~ <MouseDown>
 :map! <M-Esc>[62~ <MouseDown>
@@ -604,7 +607,7 @@ nmap <Leader>bc :BundleClean<CR>
 " Ack
 " ---------------
 :set grepprg=ack\ -a
-:let g:ackprg="ack -H --nocolor --nogroup"
+:let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " ---------------
 " snipMate
