@@ -472,6 +472,10 @@ let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
 
+" ---------------
+" Debugger 
+" ---------------
+let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
 
 " ---------------
 " Hex Highlight
