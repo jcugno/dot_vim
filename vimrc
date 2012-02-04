@@ -45,7 +45,6 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mutewinter/LustyJuggler'
 Bundle 'Gundo'
 " UI Additions
-Bundle 'dickeytk/status.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'mutewinter/ir_black_mod'
 Bundle 'godlygeek/csapprox'
@@ -95,6 +94,10 @@ Bundle 'DBGp-Remote-Debugger-Interface'
 
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
+
+" Set leader to ,
+" Note: This line MUST come before any <leader> mappings
+let mapleader=","
 
 " ----------------------------------------
 " Platform Specific Configuration
@@ -335,9 +338,6 @@ nnoremap <Leader>f <C-w>v<C-w>l
 " Leader
 " ---------------
 
-" Set leader to ,
-let mapleader=","
-
 " The escape key is a long ways away. This maps it to the sequence ';;'
 :map! jj <esc>
 
@@ -385,16 +385,32 @@ let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
 let g:neocomplcache_enable_at_startup=1
 let g:neocomplcache_enable_auto_select=1 "Select the first entry automatically
 let g:neocomplcache_enable_cursor_hold_i=1
-let g:neocomplcache_cursor_hold_i_time=300
+let g:neocomplcache_cursor_hold_i_time=500
 let g:neocomplcache_auto_completion_start_length=1
 
 " Tab / Shift-Tab to cycle completions
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
 
-" Ctrl-K to complete and advance snippet
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+" Required to make neocomplcache_cursor_hold_i_time work
+" See https://github.com/Shougo/neocomplcache/issues/140
+let s:update_time_save = &updatetime
+autocmd InsertEnter * call s:on_insert_enter()
+
+function! s:on_insert_enter()
+  if &updatetime > g:neocomplcache_cursor_hold_i_time
+    let s:update_time_save = &updatetime
+    let &updatetime = g:neocomplcache_cursor_hold_i_time
+  endif
+endfunction
+
+autocmd InsertLeave * call s:on_insert_leave()
+
+function! s:on_insert_leave()
+  if &updatetime < s:update_time_save
+    let &updatetime = s:update_time_save
+  endif
+endfunction
 
 " ---------------
 " Lusty Juggler
@@ -561,30 +577,6 @@ endif
 let g:session_autosave=0
 let g:session_autoload=0
 nnoremap <leader>os :OpenSession<CR>
-
-" ---------------
-" status.vim
-" ---------------
-let g:statusline_fugitive=1
-let g:statusline_fullpath=0
-" Everything must be after Right Separator for BufStat
-let g:statusline_order=[
-      \ 'Filename',
-      \ 'Encoding',
-      \ 'Help',
-      \ 'Filetype',
-      \ 'Modified',
-      \ 'Fugitive',
-      \ 'RVM',
-      \ 'TabWarning',
-      \ 'Syntastic',
-      \ 'Paste',
-      \ 'ReadOnly',
-      \ 'RightSeperator',
-      \ 'CurrentHighlight',
-      \ 'CursorColumn',
-      \ 'LineAndTotal',
-      \ 'FilePercent']
 
 " ---------------
 " Browser Refresh
