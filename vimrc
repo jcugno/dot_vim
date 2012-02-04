@@ -224,6 +224,7 @@ set ignorecase " Case insensitive search
 set smartcase " Non-case sensitive search
 set incsearch
 set hlsearch
+set wildignore+=*.o,*.obj,*.exe,*.so,*.dll,*.pyc,.svn,.hg,.bzr,.git,.sass-cache
 
 " ---------------
 " Visual
@@ -329,6 +330,13 @@ imap <Leader>k <Esc>lki
 " Map <leader>f to split horizontally, and move to bottom window
 nnoremap <Leader>f <C-w>v<C-w>l
 
+" Window Splitting
+nmap <silent> <leader>sh :split<CR>
+nmap <silent> <leader>sv :vsplit<CR>
+" Because I'm dyslexic
+nmap <silent> <leader>hs :split<CR>
+nmap <silent> <leader>vs :vsplit<CR>
+nmap <silent> <leader>sc :close<CR>
 
 " ---------------
 " Leader
@@ -457,11 +465,19 @@ nnoremap <leader>fb :FufBuffer<CR>
 " ---------------
 " NERDTree
 " ---------------
+
+" Auto open NerdTree if you didn't specifiy a file
+autocmd vimenter * if !argc() | NERDTree | endif
+
+" Lets you close vim if the only window left is NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
 nmap <silent><C-n> :NERDTree<CR>
 nnoremap <leader>n :NERDTree<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nc :NERDTreeClose<CR>
 nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <leader>nn :NERDTreeToggle<CR>
 let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2 " Change the NERDTree directory to the root node
 let NERDChristmasTree=1
