@@ -331,14 +331,6 @@ imap <Leader>k <Esc>lki
 " Map <leader>f to split horizontally, and move to bottom window
 nnoremap <Leader>f <C-w>v<C-w>l
 
-" Window Splitting
-nmap <silent> <leader>sh :split<CR>
-nmap <silent> <leader>sv :vsplit<CR>
-" Because I'm dyslexic
-nmap <silent> <leader>hs :split<CR>
-nmap <silent> <leader>vs :vsplit<CR>
-nmap <silent> <leader>sc :close<CR>
-
 " ---------------
 " Leader
 " ---------------
@@ -349,9 +341,13 @@ let mapleader=","
 " The escape key is a long ways away. This maps it to the sequence ';;'
 :map! jj <esc>
 
-
-nmap <silent> <leader>s :set spell!<CR>
+nmap <silent> <leader>ss :set spell!<CR>
 nmap <silent> <leader>v :e ~/.vim/vimrc<CR>
+
+" Window Splitting
+nmap <silent> <leader>sh :split<CR>
+nmap <silent> <leader>sv :vsplit<CR>
+
 
 " ----------------------------------------
 " Auto Commands
