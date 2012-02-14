@@ -62,6 +62,8 @@ Bundle 'tpope/vim-speeddating'
 Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 Bundle 'mileszs/ack.vim'
+Bundle 'jcugno/vim-phpunit'
+
 " Automatic Helpers
 Bundle 'xolox/vim-session'
 Bundle 'Raimondi/delimitMate'
@@ -70,11 +72,11 @@ Bundle 'ervandew/supertab'
 Bundle 'gregsexton/MatchTag'
 Bundle 'Shougo/neocomplcache'
 " SnipMate
-Bundle "garbas/vim-snipmate"
+Bundle 'garbas/vim-snipmate'
 " SnipMate Depedancies
-Bundle "MarcWeber/vim-addon-mw-utils"
-Bundle "tomtom/tlib_vim"
-Bundle "snipmate-snippets"
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+Bundle 'snipmate-snippets'
 " Language Additions
 Bundle 'jcugno/PIV'
 Bundle 'vim-ruby/vim-ruby'
@@ -382,35 +384,45 @@ let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
 " ---------------
 " Neocachecompl
 " ---------------
-let g:neocomplcache_enable_at_startup=1
-let g:neocomplcache_enable_auto_select=1 "Select the first entry automatically
-let g:neocomplcache_enable_cursor_hold_i=1
-let g:neocomplcache_cursor_hold_i_time=500
-let g:neocomplcache_auto_completion_start_length=1
+" let g:neocomplcache_enable_at_startup=0
+" let g:neocomplcache_enable_auto_select=1 "Select the first entry automatically
+" let g:neocomplcache_enable_cursor_hold_i=0
+" let g:neocomplcache_cursor_hold_i_time=500
+" let g:neocomplcache_auto_completion_start_length=1
 
 " Tab / Shift-Tab to cycle completions
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+ let g:acp_enableAtStartup = 0 " disable AutoComplPop
+ let g:neocomplcache_enable_at_startup = 1 " use neocomplcache
+ let g:neocomplcache_max_list = 20
+ let g:neocomplcache_max_keyword_width = 50
+ let g:neocomplcache_max_menu_width = 15
+ let g:neocomplcache_auto_completion_start_length = 2 " auto completion word length.
+ let g:neocomplcache_manual_completion_start_length = 2 " manual completion word length.
+ let g:neocomplcache_min_keyword_length = 3
+ let g:neocomplcache_min_syntax_length = 3
+ let g:neocomplcache_enable_ignore_case = 1 " use ignorecase
+ let g:neocomplcache_enable_smart_case = 1 " use Smartcase
+ let g:neocomplcache_disable_auto_complete = 0 " if 1 to disable, can manual completion by <C-x><C-u>
+ let g:neocomplcache_enable_wildcard = 1 " enable wildcard like *
+ let g:neocomplcache_enable_cursor_hold_i = 1 " relative with updatetime event
+ let g:neocomplcache_enable_auto_select = 1 " =1 -> AutoComplPop like behavior.
+ let g:neocomplcache_enable_auto_delimiter = 0
+ let g:neocomplcache_cursor_hold_i_time = 100 " completion time
+ 
+ " ambiguous searching match
+ let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.
+ let g:neocomplcache_enable_underbar_completion = 0
 
-" Required to make neocomplcache_cursor_hold_i_time work
-" See https://github.com/Shougo/neocomplcache/issues/140
-let s:update_time_save = &updatetime
-autocmd InsertEnter * call s:on_insert_enter()
+ "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>"
+ "function! s:check_back_space()"{{{
+"	 let col = col('.') - 1
+"	 return !col || getline('.')[col - 1] =~ '\s'
+" endfunction"}}
 
-function! s:on_insert_enter()
-  if &updatetime > g:neocomplcache_cursor_hold_i_time
-    let s:update_time_save = &updatetime
-    let &updatetime = g:neocomplcache_cursor_hold_i_time
-  endif
-endfunction
+"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>"
 
-autocmd InsertLeave * call s:on_insert_leave()
-
-function! s:on_insert_leave()
-  if &updatetime < s:update_time_save
-    let &updatetime = s:update_time_save
-  endif
-endfunction
 
 " ---------------
 " Lusty Juggler
@@ -440,6 +452,14 @@ if has('ruby')
     nmap <silent><M-4> :ruby LustyJ::profile() {$lusty_juggler.send('choose',5)}<CR>
   endif
 end
+
+" ---------------
+"  PHP Unit
+" ---------------
+let g:phpunit_srcroot = '/'
+let g:phpunit_testroot = 'tests'
+let g:phpunit_tests = g:phpunit_testroot
+let g:phpunit_params = '--stop-on-failure --configuration tests/phpunit.xml'
 
 " ---------------
 " Syntastic
