@@ -38,28 +38,22 @@ Bundle 'gmarik/vundle'
 
 " Navigation
 Bundle 'FuzzyFinder'
-Bundle 'ZoomWin'
 Bundle 'wincent/Command-T'
-Bundle 'spiiph/vim-space'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'mutewinter/LustyJuggler'
 Bundle 'Gundo'
 " UI Additions
 Bundle 'scrooloose/nerdtree'
-Bundle 'mutewinter/ir_black_mod'
 Bundle 'godlygeek/csapprox'
-Bundle 'Rykka/ColorV'
 Bundle 'taglist.vim'
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-powerline'
+Bundle 'jeffkreeftmeijer/vim-numbertoggle'
+Bundle 'tpope/vim-fugitive'
 
-" OS Integration
-Bundle 'mkitt/browser-refresh.vim'
 " Commands
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-speeddating'
-Bundle 'tpope/vim-fugitive'
 Bundle 'godlygeek/tabular'
 Bundle 'mileszs/ack.vim'
 Bundle 'jcugno/vim-phpunit'
@@ -70,23 +64,13 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'gregsexton/MatchTag'
-Bundle 'Shougo/neocomplcache'
-" SnipMate
-Bundle 'garbas/vim-snipmate'
-" SnipMate Depedancies
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
-Bundle 'snipmate-snippets'
+
 " Language Additions
 Bundle 'jcugno/PIV'
-Bundle 'vim-ruby/vim-ruby'
 Bundle 'msanders/cocoa.vim'
-Bundle 'tpope/vim-haml'
 Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'itspriddle/vim-jquery'
-Bundle 'tpope/vim-rails'
-Bundle 'mutewinter/taskpaper.vim'
 Bundle 'leshill/vim-json'
 " Libraries
 Bundle 'L9'
