@@ -37,24 +37,24 @@ Bundle 'gmarik/vundle'
 " ---------------
 
 " Navigation
-Bundle 'FuzzyFinder'
+" Bundle 'FuzzyFinder'
 Bundle 'wincent/Command-T'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mutewinter/LustyJuggler'
+" Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'mutewinter/LustyJuggler'
 Bundle 'Gundo'
 " UI Additions
 Bundle 'scrooloose/nerdtree'
-Bundle 'godlygeek/csapprox'
-Bundle 'taglist.vim'
+" Bundle 'godlygeek/csapprox'
+" Bundle 'taglist.vim'
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'jeffkreeftmeijer/vim-numbertoggle'
-Bundle 'tpope/vim-fugitive'
+" Bundle 'tpope/vim-fugitive'
 
 " Commands
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'tpope/vim-surround'
-Bundle 'godlygeek/tabular'
+" Bundle 'scrooloose/nerdcommenter'
+" Bundle 'tpope/vim-surround'
+" Bundle 'godlygeek/tabular'
 Bundle 'mileszs/ack.vim'
 Bundle 'jcugno/vim-phpunit'
 
@@ -62,19 +62,19 @@ Bundle 'jcugno/vim-phpunit'
 Bundle 'xolox/vim-session'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
-Bundle 'ervandew/supertab'
-Bundle 'gregsexton/MatchTag'
+" Bundle 'ervandew/supertab'
+" Bundle 'gregsexton/MatchTag'
 
 " Language Additions
 Bundle 'jcugno/PIV'
-Bundle 'msanders/cocoa.vim'
+" Bundle 'msanders/cocoa.vim'
 Bundle 'pangloss/vim-javascript'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'itspriddle/vim-jquery'
+" Bundle 'kchmck/vim-coffee-script'
+" Bundle 'itspriddle/vim-jquery'
 Bundle 'leshill/vim-json'
 " Libraries
-Bundle 'L9'
-Bundle 'tpope/vim-repeat'
+" Bundle 'L9'
+" Bundle 'tpope/vim-repeat'
 " Debugging
 Bundle 'DBGp-Remote-Debugger-Interface'
 

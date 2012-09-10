@@ -13,6 +13,9 @@
 " Power mgmt savings -- turn off blinking cursor
 let &guicursor = &guicursor . ",a:blinkon0"
 
+" Use the clipboard
+set clipboard+=unnamed " Yanks go on clipboard instead.
+
 " Do not display Toolbar or menus
 " :set go-=T
 " :set go-=m
