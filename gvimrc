@@ -5,7 +5,7 @@
 " :set guifont=Andale\ Mono\ 11
 " :set guifont=Menlo\ Regular:h11
 " :set guifont=Monico:h11
-:set guifont=Bitstream\ Vera\ Sans\ Mono:h11
+:set guifont=Bitstream\ Vera\ Sans\ Mono:h12
 :set lines=55
 :set columns=127
 :set transparency=2
