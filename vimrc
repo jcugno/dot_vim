@@ -277,6 +277,9 @@ cmap w!! w !sudo tee % >/dev/null
 " SVN blame for visual selection
 vmap gl :<C-U>!svn blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
 
+" Add semicolon to the end of the line
+inoremap <leader>; <C-o>A;
+
 " This is for mouse scrolling (primarily in GVIM)
 :map <M-Esc>[62~ <MouseDown>
 :map! <M-Esc>[62~ <MouseDown>
