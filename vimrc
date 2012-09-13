@@ -1,21 +1,8 @@
 " =======================================
-" Who: Jared Cugno based on Vim of Champions by Jeremy Mack 
+" Who: Jared Cugno based on Vim of Champions by Jeremy Mack
 " What: .vimrc
 " Version: 1.0 (this may never change because who versions dot files,
 " honestly)
-"" From prev config
-" :set formatoptions=qroctn2
-" set wildmode=list:longest,full
-" set pastetoggle=<Ins>
-" " Folding commands (normal mode only
-	" ,,l = loadview; ,,m = mkview
-" :set viewdir=$HOME/.vim.view/
-"	:autocmd BufWrite * mkview!
-" :autocmd BufWinEnter *.* silent loadview
-" set highlight=lub
-" Repair weird terminal/vim settings
-" :set backspace=start,eol,indent
-" Todo: Needs TagList plugin and Gundo
 
 " =======================================
 
@@ -42,18 +29,23 @@ Bundle 'wincent/Command-T'
 " Bundle 'Lokaltog/vim-easymotion'
 " Bundle 'mutewinter/LustyJuggler'
 Bundle 'Gundo'
+Bundle 'bufexplorer.zip'
+
 " UI Additions
 Bundle 'scrooloose/nerdtree'
 " Bundle 'godlygeek/csapprox'
-" Bundle 'taglist.vim'
+Bundle 'taglist.vim'
 Bundle 'jcugno/all-colors-pack'
+Bundle 'Lokaltog/vim-distinguished'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'jeffkreeftmeijer/vim-numbertoggle'
 " Bundle 'tpope/vim-fugitive'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'twilight'
 
 " Commands
 " Bundle 'scrooloose/nerdcommenter'
-" Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-surround'
 " Bundle 'godlygeek/tabular'
 Bundle 'mileszs/ack.vim'
 Bundle 'jcugno/vim-phpunit'
@@ -62,16 +54,16 @@ Bundle 'jcugno/vim-phpunit'
 Bundle 'xolox/vim-session'
 Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
-" Bundle 'ervandew/supertab'
+Bundle 'msanders/snipmate.vim'
+Bundle 'ervandew/supertab'
 " Bundle 'gregsexton/MatchTag'
 
 " Language Additions
 Bundle 'jcugno/PIV'
-" Bundle 'msanders/cocoa.vim'
+Bundle 'shawncplus/phpcomplete.vim'
 Bundle 'pangloss/vim-javascript'
-" Bundle 'kchmck/vim-coffee-script'
-" Bundle 'itspriddle/vim-jquery'
 Bundle 'leshill/vim-json'
+
 " Libraries
 " Bundle 'L9'
 " Bundle 'tpope/vim-repeat'
@@ -127,17 +119,17 @@ set colorcolumn=80
 if has('unix') && !has('gui_macvim')
   if $TERM == 'xterm-256color'
     " Neato, 256 color terminal. We can use ir_black_mod
-    colorscheme molokai
+    colorscheme distinguished
   else
     " We can't use ir_black_mod :(
     set term=xterm
 		set t_Co=256
 		let g:CSApprox_verbose_level=0
-    colorscheme molokai
+    colorscheme distinguished
   endif
 else
   " We're good if not on unix or in MacVim
-  colorscheme molokai
+  colorscheme distinguished
 endif
 
 " ---------------
@@ -277,7 +269,7 @@ nnoremap k gk
 
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
-vnoremap > >gv 
+vnoremap > >gv
 
 " For when you forget to sudo.. Really Write the file.
 cmap w!! w !sudo tee % >/dev/null
@@ -362,8 +354,11 @@ endif
 " ---------------
 " Set these up for cross-buffer completion (something Neocachecompl has a hard
 " time with)
-let g:SuperTabDefaultCompletionType="<c-x><c-n>"
-let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
+let g:SuperTabDefaultCompletionType="context"
+let g:SuperTabContextDefaultCompletionType="context"
+
+" let g:SuperTabDefaultCompletionType="<c-x><c-n>"
+" let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
 
 " ---------------
 " Neocachecompl
@@ -394,7 +389,7 @@ let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
  let g:neocomplcache_enable_auto_select = 1 " =1 -> AutoComplPop like behavior.
  let g:neocomplcache_enable_auto_delimiter = 0
  let g:neocomplcache_cursor_hold_i_time = 100 " completion time
- 
+
  " ambiguous searching match
  let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.
  let g:neocomplcache_enable_underbar_completion = 0
@@ -406,36 +401,6 @@ let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
 " endfunction"}}
 
 "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>"
-
-
-" ---------------
-" Lusty Juggler
-" ---------------
-if has('unix')
-  " Allows for previous buffer on unix systems without most recent patch level
-  " that enable LustyJuggler to work
-  nnoremap <leader>, :e#<CR>
-else
-  nnoremap <leader>, :LustyJugglePrevious<CR>
-end
-let g:LustyJugglerShowKeys=1 " Show numbers for Lusty Buffers
-let g:LustyJugglerSuppressRubyWarning=1
-
-" Make Command / Alt 1-4 change to recent buffers in LustyJuggler
-
-if has('ruby')
-  if has('mac') || has('macunix') || has('gui_macvim')
-    nmap <silent><D-1> :ruby LustyJ::profile() {$lusty_juggler.send('choose',2)}<CR>
-    nmap <silent><D-2> :ruby LustyJ::profile() {$lusty_juggler.send('choose',3)}<CR>
-    nmap <silent><D-3> :ruby LustyJ::profile() {$lusty_juggler.send('choose',4)}<CR>
-    nmap <silent><D-4> :ruby LustyJ::profile() {$lusty_juggler.send('choose',5)}<CR>
-  else
-    nmap <silent><M-1> :ruby LustyJ::profile() {$lusty_juggler.send('choose',2)}<CR>
-    nmap <silent><M-2> :ruby LustyJ::profile() {$lusty_juggler.send('choose',3)}<CR>
-    nmap <silent><M-3> :ruby LustyJ::profile() {$lusty_juggler.send('choose',4)}<CR>
-    nmap <silent><M-4> :ruby LustyJ::profile() {$lusty_juggler.send('choose',5)}<CR>
-  endif
-end
 
 " ---------------
 "  PHP Unit
@@ -461,23 +426,6 @@ if has('win32') || has('win64')
   let g:syntastic_jsl_conf=$HOME.'/.vim/config/windows/syntastic/jsl.conf'
   let g:syntastic_disabled_filetypes=['sh'] " Disable .sh on Windows
 endif
-" ---------------
-" Minibuffer Explorer
-" ---------------
-let g:miniBufExplMapWindowNavVim=1
-let g:miniBufExplMapWindowNavArrows=1
-let g:miniBufExplMapCTabSwitchBufs=1
-let g:miniBufExplModSelTarget=1
-
-" ---------------
-" FuzzyFinder
-" ---------------
-let g:fuf_modesDisable=['mrucmd'] " Enables FufMruFile
-nnoremap <silent><C-y> :FufMruFile<CR>
-nnoremap <silent><C-u> :FufFileWithCurrentBufferDir<CR>
-nnoremap <leader>ff :FufFile<CR>
-nnoremap <leader>fm :FufMruFile<CR>
-nnoremap <leader>fb :FufBuffer<CR>
 
 " ---------------
 " NERDTree
@@ -506,15 +454,9 @@ let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
 
 " ---------------
-" Debugger 
+" Debugger
 " ---------------
 let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
-
-" ---------------
-" Hex Highlight
-" ---------------
-command HexHighlight call HexHighlight()
-nnoremap <leader>h :HexHighlight<CR>
 
 " ---------------
 " Command T
@@ -538,13 +480,14 @@ nnoremap <Leader>t :CommandT<CR>
 " These are tag files I've created; you may want to remove/change these for your
 " own usage.
 :call LoadTags("zf1")
-:call LoadTags("pms-zend")
-:call LoadTags("pms-dev")
 :call LoadTags("buzz_cms")
+
+" Build tags from the current directory
+map <F8> :!~/.vim/bin/mkTags
 
 " TagList options
 
-nnoremap <silent> <F2> :TlistToggle<CR>
+nnoremap <silent> <leader>tl :TlistToggle<CR>
 
 let Tlist_Use_Right_Window = 0
 let Tlist_Compact_Format = 1
@@ -581,20 +524,6 @@ endif
 let g:session_autosave=0
 let g:session_autoload=0
 nnoremap <leader>os :OpenSession<CR>
-
-" ---------------
-" Browser Refresh
-" ---------------
-map <silent><leader>r :RRB<CR>
-map <silent><F5> :RRB<CR>
-
-" ---------------
-" SpeedDating
-" ---------------
-let g:speeddating_no_mappings=1 " Remove default mappings (C-a etc.)
-nmap <silent><leader>dm <Plug>SpeedDatingDown
-nmap <silent><leader>dp <Plug>SpeedDatingUp
-nmap <silent><leader>dn <Plug>SpeedDatingNowUTC
 
 " ---------------
 " Tabular
@@ -640,7 +569,7 @@ if has('ruby')
 ruby << EOF
   require 'open-uri'
   require 'openssl'
-  
+
   def extract_url(url)
     re = %r{(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]\{\};:'".,<>?«»“”‘’]))}
 
