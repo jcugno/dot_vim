@@ -315,6 +315,9 @@ imap <Leader>k <Esc>lki
 " Map <leader>f to split horizontally, and move to bottom window
 nnoremap <Leader>f <C-w>v<C-w>l
 
+" Turn off search results if you press the spacebar
+nmap <SPACE> <SPACE>:noh<CR>
+
 " ---------------
 " Leader
 " ---------------
