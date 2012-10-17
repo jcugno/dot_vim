@@ -23,53 +23,85 @@ Bundle 'gmarik/vundle'
 " Plugin Bundles
 " ---------------
 
+" Dependencies
+Bundle 'MarcWeber/vim-addon-mw-utils'
+Bundle 'tomtom/tlib_vim'
+
 " Navigation
-" Bundle 'FuzzyFinder'
-Bundle 'wincent/Command-T'
-" Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'mutewinter/LustyJuggler'
-Bundle 'Gundo'
+Bundle 'kien/ctrlp.vim'
+Bundle 'mbbill/undotree'
 Bundle 'bufexplorer.zip'
 
 " UI Additions
 Bundle 'scrooloose/nerdtree'
-" Bundle 'godlygeek/csapprox'
 Bundle 'taglist.vim'
+Bundle 'Lokaltog/vim-powerline'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'jeffkreeftmeijer/vim-numbertoggle'
+Bundle 'nathanaelkane/vim-indent-guides'
+
+" Color Schemes
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-distinguished'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'jeffkreeftmeijer/vim-numbertoggle'
-" Bundle 'tpope/vim-fugitive'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'twilight'
 
 " Commands
-" Bundle 'scrooloose/nerdcommenter'
 Bundle 'tpope/vim-surround'
-" Bundle 'godlygeek/tabular'
-Bundle 'mileszs/ack.vim'
+if executable('ack-grep')
+	let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+	Bundle 'mileszs/ack.vim'
+elseif executable('ack')
+  Bundle 'mileszs/ack.vim'
+endif
 Bundle 'jcugno/vim-phpunit'
+Bundle 'mattn/zencoding-vim'
+Bundle 'Raimondi/delimitMate'
+Bundle 'godlygeek/tabular'
 
 " Automatic Helpers
 Bundle 'xolox/vim-session'
-Bundle 'Raimondi/delimitMate'
 Bundle 'scrooloose/syntastic'
-Bundle 'msanders/snipmate.vim'
-Bundle 'ervandew/supertab'
-" Bundle 'gregsexton/MatchTag'
+
+" Snippets & AutoComplete
+Bundle "ervandew/supertab"
+Bundle "garbas/vim-snipmate"
+Bundle 'honza/snipmate-snippets'
 
 " Language Additions
-Bundle 'jcugno/PIV'
+" PHP
+Bundle 'spf13/PIV'
 Bundle 'shawncplus/phpcomplete.vim'
+
+" Javascript
 Bundle 'pangloss/vim-javascript'
 Bundle 'leshill/vim-json'
 
-" Libraries
-" Bundle 'L9'
-" Bundle 'tpope/vim-repeat'
+" HTML
+" "Bundle 'amirh/HTML-AutoCloseTag'
+Bundle 'docunext/closetag.vim'
+
+" General
+Bundle 'scrooloose/nerdcommenter'
+if executable('ctags')
+	Bundle 'majutsushi/tagbar'
+endif
+ Bundle 'tpope/vim-markdown'
+ Bundle 'spf13/vim-preview'
+
+
 " Debugging
 Bundle 'DBGp-Remote-Debugger-Interface'
 
+" Retired but may be useful in the future
+" Bundle 'L9'
+" Bundle 'tpope/vim-fugitive'
+" Bundle 'godlygeek/csapprox'
+" Bundle 'Lokaltog/vim-easymotion'
+" Bundle 'mutewinter/LustyJuggler'
+" Bundle 'gregsexton/MatchTag'
+" Bundle 'tpope/vim-repeat'
+" Bundle 'FuzzyFinder'
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
 
@@ -121,7 +153,6 @@ if has('unix') && !has('gui_macvim')
     " Neato, 256 color terminal. We can use ir_black_mod
     colorscheme distinguished
   else
-    " We can't use ir_black_mod :(
     set term=xterm
 		set t_Co=256
 		let g:CSApprox_verbose_level=0
@@ -148,7 +179,8 @@ set nowrap  " Line wrapping off
 set laststatus=2  " Always show the statusline
 set cmdheight=2
 set relativenumber " I think I like these more still but it may not exist
-
+set cursorline
+set linespace=0
 
 " ---------------
 " Behaviors
@@ -318,6 +350,13 @@ nnoremap <Leader>f <C-w>v<C-w>l
 " Turn off search results if you press the spacebar
 nmap <SPACE> <SPACE>:noh<CR>
 
+" Change Working Directory to that of the current file
+cmap cwd lcd %:p:h
+cmap cd. lcd %:p:h
+
+" Adjust viewports to the same size
+map <Leader>= <C-w>=
+
 " ---------------
 " Leader
 " ---------------
@@ -356,6 +395,75 @@ endif
 " ----------------------------------------
 
 " ---------------
+" indent_guides
+" ---------------
+if !exists('g:spf13_no_indent_guides_autocolor')
+	let g:indent_guides_auto_colors = 1
+else
+	" for some colorscheme ,autocolor will not work,like 'desert','ir_black'.
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#212121   ctermbg=3
+	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#404040 ctermbg=4
+endif
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+" Before the sp13 changes..
+" let g:indent_guides_auto_colors=1
+" let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_color_change_percent=5
+
+" if has('unix') && !has('gui_macvim')
+"   if $TERM == 'xterm-256color'
+"     " Make the guides smaller since they will be crazy visible in 256color mode
+"     let g:indent_guides_guide_size=1
+"   else
+"     " Turn off the guides when 256color mode isn't available
+"     let g:indent_guides_enable_on_vim_startup=0
+"   endif
+" endif
+
+
+
+
+"" ---------------
+" UndoTree
+" ---------------
+nnoremap <Leader>u :UndotreeToggle<CR>
+
+" ---------------
+" OmniComplete
+" ---------------
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "context"
+let g:SuperTabClosePreviewOnPopupClose = 1
+set completeopt=longest,menuone,preview
+
+  autocmd FileType *
+    \ if &omnifunc != '' |
+    \   call SuperTabChain(&omnifunc, "<c-x><c-n>") |
+    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
+    \ endif
+
+" ---------------
+" Zencoding
+" ---------------
+let g:user_zen_leader_key = "<c-z>"
+
+let g:user_zen_settings = {
+  \  'php' : {
+  \    'extends' : 'html',
+  \    'filters' : 'c',
+  \  },
+  \  'xml' : {
+  \    'extends' : 'html',
+  \  },
+  \  'haml' : {
+  \    'extends' : 'html',
+  \  },
+  \}
+
+" ---------------
 " SuperTab
 " ---------------
 " Set these up for cross-buffer completion (something Neocachecompl has a hard
@@ -369,36 +477,29 @@ let g:SuperTabContextDefaultCompletionType="context"
 " ---------------
 " Neocachecompl
 " ---------------
-" let g:neocomplcache_enable_at_startup=0
-" let g:neocomplcache_enable_auto_select=1 "Select the first entry automatically
-" let g:neocomplcache_enable_cursor_hold_i=0
-" let g:neocomplcache_cursor_hold_i_time=500
-" let g:neocomplcache_auto_completion_start_length=1
 
-" Tab / Shift-Tab to cycle completions
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
- let g:acp_enableAtStartup = 0 " disable AutoComplPop
- let g:neocomplcache_enable_at_startup = 1 " use neocomplcache
- let g:neocomplcache_max_list = 20
- let g:neocomplcache_max_keyword_width = 50
- let g:neocomplcache_max_menu_width = 15
- let g:neocomplcache_auto_completion_start_length = 2 " auto completion word length.
- let g:neocomplcache_manual_completion_start_length = 2 " manual completion word length.
- let g:neocomplcache_min_keyword_length = 3
- let g:neocomplcache_min_syntax_length = 3
- let g:neocomplcache_enable_ignore_case = 1 " use ignorecase
- let g:neocomplcache_enable_smart_case = 1 " use Smartcase
- let g:neocomplcache_disable_auto_complete = 0 " if 1 to disable, can manual completion by <C-x><C-u>
- let g:neocomplcache_enable_wildcard = 1 " enable wildcard like *
- let g:neocomplcache_enable_cursor_hold_i = 1 " relative with updatetime event
- let g:neocomplcache_enable_auto_select = 1 " =1 -> AutoComplPop like behavior.
- let g:neocomplcache_enable_auto_delimiter = 0
- let g:neocomplcache_cursor_hold_i_time = 100 " completion time
+ "let g:acp_enableAtStartup = 0 " disable AutoComplPop"
+ "let g:neocomplcache_enable_at_startup = 1 " use neocomplcache"
+ "let g:neocomplcache_max_list = 20"
+ "let g:neocomplcache_max_keyword_width = 50"
+ "let g:neocomplcache_max_menu_width = 15"
+ "let g:neocomplcache_auto_completion_start_length = 2 " auto completion word length."
+ "let g:neocomplcache_manual_completion_start_length = 2 " manual completion word length.
+ "let g:neocomplcache_min_keyword_length = 3
+ ""let g:neocomplcache_min_syntax_length = 3
+ ""let g:neocomplcache_enable_ignore_case = 1 " use ignorecase
+ ""let g:neocomplcache_enable_smart_case = 1 " use Smartcase
+ ""let g:neocomplcache_disable_auto_complete = 0 " if 1 to disable, can manual completion by <C-x><C-u>
+ ""let g:neocomplcache_enable_wildcard = 1 " enable wildcard like *
+ ""let g:neocomplcache_enable_cursor_hold_i = 1 " relative with updatetime event
+ ""let g:neocomplcache_enable_auto_select = 1 " =1 -> AutoComplPop like behavior.
+ ""let g:neocomplcache_enable_auto_delimiter = 0
+ ""let g:neocomplcache_cursor_hold_i_time = 100 " completion time
 
  " ambiguous searching match
- let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.
- let g:neocomplcache_enable_underbar_completion = 0
+""let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.' let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.
+""let g:neocomplcache_enable_underbar_completion = 0
+""imap <C-k> <Plug>(neocomplcache_snippets_expand)
 
  "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>"
  "function! s:check_back_space()"{{{
@@ -421,7 +522,8 @@ let g:phpunit_params = '--stop-on-failure --configuration tests/phpunit.xml'
 " ---------------
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
-let g:syntastic_auto_jump=1
+let g:syntastic_auto_jump=0
+let g:syntastic_javascript_checker='jshint'
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -443,7 +545,7 @@ autocmd vimenter * if !argc() | NERDTree | endif
 " Lets you close vim if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-nmap <silent><C-n> :NERDTree<CR>
+" nmap <silent><C-n> :NERDTree<CR>
 nnoremap <leader>n :NERDTree<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nc :NERDTreeClose<CR>
@@ -458,6 +560,7 @@ let NERDTreeBookmarksFile = $HOME . "/.NERDTreeBookmarks"
 let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
 " ---------------
 " Debugger
@@ -465,9 +568,24 @@ let NERDTreeQuitOnOpen=1
 let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
 
 " ---------------
+" Buffer explorer 
+" ---------------
+nmap <leader>b :BufExplorer<CR>
+
+" ---------------
 " Command T
 " ---------------
-nnoremap <Leader>t :CommandT<CR>
+" nnoremap <Leader>t :CommandT<CR>
+
+" ---------------
+" ctrlp
+" ---------------
+let g:ctrlp_working_path_mode = 2
+nnoremap <silent> <leader>t :CtrlP<CR>
+nnoremap <silent> <D-r> :CtrlPMRU<CR>
+let g:ctrlp_custom_ignore = {
+			\ 'dir':  '\.git$\|\.hg$\|\.svn$',
+			\ 'file': '\.exe$\|\.so$\|\.dll$' }
 
 " ---------------
 " Tags
@@ -485,8 +603,8 @@ nnoremap <Leader>t :CommandT<CR>
 
 " These are tag files I've created; you may want to remove/change these for your
 " own usage.
-:call LoadTags("zf1")
-:call LoadTags("buzz_cms")
+" :call LoadTags("zf1")
+" :call LoadTags("buzz_cms")
 
 " Build tags from the current directory
 map <F8> :!~/.vim/bin/mkTags
@@ -506,24 +624,6 @@ let Tlist_Process_File_Always = 1
 let Tlist_Display_Prototype = 0
 let Tlist_Display_Tag_Scope = 1
 
-
-" ---------------
-" Indent Guides
-" ---------------
-let g:indent_guides_auto_colors=1
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_color_change_percent=5
-
-if has('unix') && !has('gui_macvim')
-  if $TERM == 'xterm-256color'
-    " Make the guides smaller since they will be crazy visible in 256color mode
-    let g:indent_guides_guide_size=1
-  else
-    " Turn off the guides when 256color mode isn't available
-    let g:indent_guides_enable_on_vim_startup=0
-  endif
-endif
-
 " ---------------
 " Session
 " ---------------
@@ -531,6 +631,10 @@ let g:session_autosave=0
 let g:session_autoload=0
 nnoremap <leader>os :OpenSession<CR>
 
+" ---------------
+" TagBar
+" ---------------
+nnoremap <silent> <leader>tt :TagbarToggle<CR>
 
 " ---------------
 " Tabular
@@ -539,10 +643,14 @@ nmap <Leader>t= :Tabularize /=<CR>
 vmap <Leader>t= :Tabularize /=<CR>
 nmap <Leader>t: :Tabularize /:\zs<CR>
 vmap <Leader>t: :Tabularize /:\zs<CR>
+nmap <Leader>t:: :Tabularize /:\zs<CR>
+vmap <Leader>t:: :Tabularize /:\zs<CR>
 nmap <Leader>t, :Tabularize /,\zs<CR>
 vmap <Leader>t, :Tabularize /,\zs<CR>
 nmap <Leader>t> :Tabularize /=>\zs<CR>
 vmap <Leader>t> :Tabularize /=>\zs<CR>
+nmap <Leader>t<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>t<Bar> :Tabularize /<Bar><CR>
 
 " ---------------
 " Vundle
@@ -555,13 +663,21 @@ nmap <Leader>bc :BundleClean<CR>
 " ---------------
 " Ack
 " ---------------
-:set grepprg=ack\ -a
-:let g:ackprg="ack -H --nocolor --nogroup --column"
+" :set grepprg=ack\ -a
+" :let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " ---------------
 " snipMate
 " ---------------
 let g:snips_author = "Jared Cugno"
+let g:snips_trigger_key='<c-space>'
+
+" ---------------
+" AutoCloseTag
+" ---------------
+" Make it so AutoCloseTag works for xml and xhtml files as well
+au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+nmap <Leader>ac <Plug>ToggleAutoCloseMappings
 
 
 " ----------------------------------------
