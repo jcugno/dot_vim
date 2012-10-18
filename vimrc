@@ -71,7 +71,7 @@ Bundle 'honza/snipmate-snippets'
 
 " Language Additions
 " PHP
-Bundle 'spf13/PIV'
+Bundle 'jcugno/PIV'
 Bundle 'shawncplus/phpcomplete.vim'
 
 " Javascript
