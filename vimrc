@@ -39,6 +39,8 @@ Bundle 'Lokaltog/vim-powerline'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'jeffkreeftmeijer/vim-numbertoggle'
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'vim-scripts/buftabs'
+Bundle 'tpope/vim-repeat'
 
 " Color Schemes
 Bundle 'jcugno/all-colors-pack'
@@ -64,7 +66,7 @@ Bundle 'xolox/vim-session'
 Bundle 'scrooloose/syntastic'
 
 " Snippets & AutoComplete
-Bundle "ervandew/supertab"
+Bundle 'Shougo/neocomplcache'
 Bundle "garbas/vim-snipmate"
 Bundle 'honza/snipmate-snippets'
 
@@ -100,8 +102,8 @@ Bundle 'DBGp-Remote-Debugger-Interface'
 " Bundle 'Lokaltog/vim-easymotion'
 " Bundle 'mutewinter/LustyJuggler'
 " Bundle 'gregsexton/MatchTag'
-" Bundle 'tpope/vim-repeat'
 " Bundle 'FuzzyFinder'
+" Bundle "ervandew/supertab"
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
 
@@ -191,12 +193,19 @@ set wildmenu           " Turn on WiLd menu
 set hidden             " Change buffer - without saving
 set history=1000        " Number of things to remember in history.
 set cf                 " Enable error files & error jumping.
-set clipboard+=unnamed " Yanks go on clipboard instead.
 set autowrite          " Writes on make/shell commands
 set timeoutlen=500     " Time to wait for a command (after leader for example)
 set foldlevelstart=99  " Remove folds
 set formatoptions=crql
 set nofoldenable
+
+if has ("unix") && "Darwin" != system("echo -n \"$(uname)\"")
+	" on Linux use + register for copy-paste
+	set clipboard=unnamedplus
+else
+	" one mac and windows, use * register for copy-paste
+	set clipboard=unnamed
+endif
 
 " Use viminfo
 set viminfo='100,f1,\"1000,:100,/100,h,%
@@ -268,7 +277,7 @@ set scrolloff=3
 
 
 " Better complete options to speed it up
-set complete=.,w,b,u,U
+" set complete=.,w,b,u,U
 
 " ----------------------------------------
 " Bindings
@@ -287,6 +296,9 @@ command Q q
 " Removes doc lookup binding because it's easy to fat finger
 nmap K k
 vmap K k
+
+" Underline the current line with '='
+nmap <silent> <leader>ul :t.\|s/./=/g\|:nohls<cr>
 
 " Make line completion easier
 imap <C-l> <C-x><C-l>
@@ -366,6 +378,7 @@ map <Leader>= <C-w>=
 
 nmap <silent> <leader>ss :set spell!<CR>
 nmap <silent> <leader>v :e ~/.vim/vimrc<CR>
+nmap <silent> <leader>vv :source ~/.vim/vimrc<CR>
 
 " Window Splitting
 nmap <silent> <leader>sh :split<CR>
@@ -425,25 +438,10 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 
 
-
 "" ---------------
 " UndoTree
 " ---------------
 nnoremap <Leader>u :UndotreeToggle<CR>
-
-" ---------------
-" OmniComplete
-" ---------------
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "context"
-let g:SuperTabClosePreviewOnPopupClose = 1
-set completeopt=longest,menuone,preview
-
-  autocmd FileType *
-    \ if &omnifunc != '' |
-    \   call SuperTabChain(&omnifunc, "<c-x><c-n>") |
-    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    \ endif
 
 " ---------------
 " Zencoding
@@ -464,19 +462,53 @@ let g:user_zen_settings = {
   \}
 
 " ---------------
-" SuperTab
-" ---------------
-" Set these up for cross-buffer completion (something Neocachecompl has a hard
-" time with)
-let g:SuperTabDefaultCompletionType="context"
-let g:SuperTabContextDefaultCompletionType="context"
-
-" let g:SuperTabDefaultCompletionType="<c-x><c-n>"
-" let g:SuperTabContextDefaultCompletionType="<c-x><c-n>"
-
-" ---------------
 " Neocachecompl
 " ---------------
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_enable_smart_case = 1
+
+" I want to press tab when this up
+let g:neocomplcache_disable_auto_complete = 0
+
+" default # of completions is 100, that's crazy
+let g:neocomplcache_max_list = 5
+
+" words less than 3 letters long aren't worth completing
+let g:neocomplcache_auto_completion_start_length = 3
+
+" Enable tab to show the menu
+"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>"
+"function! s:check_back_space()"{{{
+"	let col = col('.') - 1
+"	return !col || getline('.')[col - 1] =~ '\s'
+"endfunction"}}
+
+
+" This makes sure we use neocomplcache completefunc instead of 
+" the one in rails.vim, otherwise this plugin will crap out
+let g:neocomplcache_force_overwrite_completefunc = 1
+
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+  let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+" Enable omni completion.
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+" Enable heavy omni completion.
+"if !exists('g:neocomplcache_omni_patterns')
+"  let g:neocomplcache_omni_patterns = {}
+"endif
+"let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+
 
  "let g:acp_enableAtStartup = 0 " disable AutoComplPop"
  "let g:neocomplcache_enable_at_startup = 1 " use neocomplcache"
@@ -571,11 +603,8 @@ let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
 " Buffer explorer 
 " ---------------
 nmap <leader>b :BufExplorer<CR>
-
-" ---------------
-" Command T
-" ---------------
-" nnoremap <Leader>t :CommandT<CR>
+map <S-J> :bnext<CR>
+map <S-K> :bprevious<Cr>
 
 " ---------------
 " ctrlp
@@ -629,6 +658,7 @@ let Tlist_Display_Tag_Scope = 1
 " ---------------
 let g:session_autosave=0
 let g:session_autoload=0
+let g:session_default_to_last=1
 nnoremap <leader>os :OpenSession<CR>
 
 " ---------------
@@ -659,12 +689,6 @@ nmap <Leader>bi :BundleInstall<CR>
 nmap <Leader>bi! :BundleInstall!<CR>
 nmap <Leader>bu :BundleInstall!<CR> " Because this also updates
 nmap <Leader>bc :BundleClean<CR>
-
-" ---------------
-" Ack
-" ---------------
-" :set grepprg=ack\ -a
-" :let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " ---------------
 " snipMate
@@ -852,14 +876,14 @@ nmap <silent> <leader>z :QuickSpellingFix<CR>
 	:autocmd FileType ruby noremap <C-M> :w!<CR>:!ruby %<CR>
 
 	" JSLint (CTRL-L when in a JS file)
-	:autocmd FileType javascript noremap <C-L> :!jshint %<CR>
+" 	:autocmd FileType javascript noremap <C-L> :!jshint %<CR>
 
 	" Skeleton (template) files...
-	:autocmd BufNewFile *.html 0r $HOME/.vim/skeleton.html
+" 	:autocmd BufNewFile *.html 0r $HOME/.vim/skeleton.html
 
 	" Note: The "normal" command afterwards deletes an ugly pending line and moves
 	" the cursor to the middle of the file.
-	autocmd BufNewFile *.php 0r ~/.vim/skeleton.php | normal Gdd
+" 	autocmd BufNewFile *.php 0r ~/.vim/skeleton.php | normal Gdd
 
 	" syntax highlight pod in perl scripts
 	let perl_include_pod=1
