@@ -37,7 +37,6 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'taglist.vim'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'jeffkreeftmeijer/vim-numbertoggle'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'vim-scripts/buftabs'
 Bundle 'tpope/vim-repeat'
@@ -88,8 +87,8 @@ Bundle 'scrooloose/nerdcommenter'
 if executable('ctags')
 	Bundle 'majutsushi/tagbar'
 endif
- Bundle 'tpope/vim-markdown'
- Bundle 'spf13/vim-preview'
+Bundle 'tpope/vim-markdown'
+Bundle 'spf13/vim-preview'
 
 
 " Debugging
@@ -275,9 +274,8 @@ set mousemodel=extend " Allow better terminal/mouse integration
 set scrolljump=5
 set scrolloff=3
 
-
 " Better complete options to speed it up
-" set complete=.,w,b,u,U
+set complete=.,w,b,u,U
 
 " ----------------------------------------
 " Bindings
@@ -322,7 +320,7 @@ cmap w!! w !sudo tee % >/dev/null
 vmap gl :<C-U>!svn blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
 
 " Add semicolon to the end of the line
-inoremap <leader>; <C-o>A;
+inoremap ;; <C-o>A;
 
 " This is for mouse scrolling (primarily in GVIM)
 :map <M-Esc>[62~ <MouseDown>
@@ -384,25 +382,6 @@ nmap <silent> <leader>vv :source ~/.vim/vimrc<CR>
 nmap <silent> <leader>sh :split<CR>
 nmap <silent> <leader>sv :vsplit<CR>
 
-
-" ----------------------------------------
-" Auto Commands
-" ----------------------------------------
-
-if has("autocmd")
-  " No formatting on o key newlines
-  autocmd BufNewFile,BufEnter * set formatoptions-=o
-
-  " No more complaining about untitled documents
-  autocmd FocusLost silent! :wa
-
-  " When editing a file, always jump to the last cursor position.
-  " This must be after the uncompress commands.
-  autocmd BufReadPost *
-        \ if line("'\"") > 1 && line ("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif
-endif
 " ----------------------------------------
 " Plugin Configuration
 " ----------------------------------------
@@ -410,31 +389,24 @@ endif
 " ---------------
 " indent_guides
 " ---------------
-if !exists('g:spf13_no_indent_guides_autocolor')
-	let g:indent_guides_auto_colors = 1
-else
-	" for some colorscheme ,autocolor will not work,like 'desert','ir_black'.
-	autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#212121   ctermbg=3
-	autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#404040 ctermbg=4
-endif
+" Before the sp13 changes..
+let g:indent_guides_auto_colors=1
+let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_color_change_percent=5
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
 
-" Before the sp13 changes..
-" let g:indent_guides_auto_colors=1
-" let g:indent_guides_enable_on_vim_startup=1
-" let g:indent_guides_color_change_percent=5
-
-" if has('unix') && !has('gui_macvim')
-"   if $TERM == 'xterm-256color'
-"     " Make the guides smaller since they will be crazy visible in 256color mode
-"     let g:indent_guides_guide_size=1
-"   else
-"     " Turn off the guides when 256color mode isn't available
+if has('unix') && !has('gui_macvim')
+	if $TERM == 'xterm-256color'
+	" Make the guides smaller since they will be crazy visible in 256color mode
+	let g:indent_guides_guide_size=1
+	else
+		autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#212121   ctermbg=3
+		autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#404040 ctermbg=4
+		" Turn off the guides when 256color mode isn't available
 "     let g:indent_guides_enable_on_vim_startup=0
-"   endif
-" endif
+	endif
+endif
 
 
 
@@ -465,81 +437,15 @@ let g:user_zen_settings = {
 " Neocachecompl
 " ---------------
 let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_underbar_completion = 1
+" Use smartcase.
 let g:neocomplcache_enable_smart_case = 1
+" Use camel case completion.
+let g:neocomplcache_enable_camel_case_completion = 1
+" Use underbar completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
 
-" I want to press tab when this up
-let g:neocomplcache_disable_auto_complete = 0
-
-" default # of completions is 100, that's crazy
-let g:neocomplcache_max_list = 5
-
-" words less than 3 letters long aren't worth completing
-let g:neocomplcache_auto_completion_start_length = 3
-
-" Enable tab to show the menu
-"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>"
-"function! s:check_back_space()"{{{
-"	let col = col('.') - 1
-"	return !col || getline('.')[col - 1] =~ '\s'
-"endfunction"}}
-
-
-" This makes sure we use neocomplcache completefunc instead of 
-" the one in rails.vim, otherwise this plugin will crap out
-let g:neocomplcache_force_overwrite_completefunc = 1
-
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-  let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-
-" Enable omni completion.
-" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-" Enable heavy omni completion.
-"if !exists('g:neocomplcache_omni_patterns')
-"  let g:neocomplcache_omni_patterns = {}
-"endif
-"let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-
-
- "let g:acp_enableAtStartup = 0 " disable AutoComplPop"
- "let g:neocomplcache_enable_at_startup = 1 " use neocomplcache"
- "let g:neocomplcache_max_list = 20"
- "let g:neocomplcache_max_keyword_width = 50"
- "let g:neocomplcache_max_menu_width = 15"
- "let g:neocomplcache_auto_completion_start_length = 2 " auto completion word length."
- "let g:neocomplcache_manual_completion_start_length = 2 " manual completion word length.
- "let g:neocomplcache_min_keyword_length = 3
- ""let g:neocomplcache_min_syntax_length = 3
- ""let g:neocomplcache_enable_ignore_case = 1 " use ignorecase
- ""let g:neocomplcache_enable_smart_case = 1 " use Smartcase
- ""let g:neocomplcache_disable_auto_complete = 0 " if 1 to disable, can manual completion by <C-x><C-u>
- ""let g:neocomplcache_enable_wildcard = 1 " enable wildcard like *
- ""let g:neocomplcache_enable_cursor_hold_i = 1 " relative with updatetime event
- ""let g:neocomplcache_enable_auto_select = 1 " =1 -> AutoComplPop like behavior.
- ""let g:neocomplcache_enable_auto_delimiter = 0
- ""let g:neocomplcache_cursor_hold_i_time = 100 " completion time
-
- " ambiguous searching match
-""let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.' let g:neocomplcache_enable_camel_case_completion = 0 " disable camel case completion.
-""let g:neocomplcache_enable_underbar_completion = 0
-""imap <C-k> <Plug>(neocomplcache_snippets_expand)
-
- "inoremap <expr><TAB> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<TAB>" : "\<C-x>\<C-u>"
- "function! s:check_back_space()"{{{
-"	 let col = col('.') - 1
-"	 return !col || getline('.')[col - 1] =~ '\s'
-" endfunction"}}
-
-"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>"
 
 " ---------------
 "  PHP Unit
@@ -572,12 +478,11 @@ endif
 " ---------------
 
 " Auto open NerdTree if you didn't specifiy a file
-autocmd vimenter * if !argc() | NERDTree | endif
+" autocmd vimenter * if !argc() | NERDTree | endif
 
 " Lets you close vim if the only window left is NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-" nmap <silent><C-n> :NERDTree<CR>
 nnoremap <leader>n :NERDTree<CR>
 nnoremap <leader>nf :NERDTreeFind<CR>
 nnoremap <leader>nc :NERDTreeClose<CR>
@@ -656,9 +561,8 @@ let Tlist_Display_Tag_Scope = 1
 " ---------------
 " Session
 " ---------------
-let g:session_autosave=0
-let g:session_autoload=0
-let g:session_default_to_last=1
+let g:session_autosave=1
+let g:session_autoload=1
 nnoremap <leader>os :OpenSession<CR>
 
 " ---------------
@@ -874,22 +778,6 @@ nmap <silent> <leader>z :QuickSpellingFix<CR>
 
 	" Run file with Ruby interpreter
 	:autocmd FileType ruby noremap <C-M> :w!<CR>:!ruby %<CR>
-
-	" JSLint (CTRL-L when in a JS file)
-" 	:autocmd FileType javascript noremap <C-L> :!jshint %<CR>
-
-	" Skeleton (template) files...
-" 	:autocmd BufNewFile *.html 0r $HOME/.vim/skeleton.html
-
-	" Note: The "normal" command afterwards deletes an ugly pending line and moves
-	" the cursor to the middle of the file.
-" 	autocmd BufNewFile *.php 0r ~/.vim/skeleton.php | normal Gdd
-
-	" syntax highlight pod in perl scripts
-	let perl_include_pod=1
-	let perl_extended_vars=1
-	let perl_fold=1
-	let perl_fold_blocks=1
 
 	" .inc, phpt, phtml, phps files as PHP
 	:autocmd BufNewFile,BufRead *.inc set ft=php
