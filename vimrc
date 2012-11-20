@@ -40,12 +40,14 @@ Bundle 'Lokaltog/vim-easymotion'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'vim-scripts/buftabs'
 Bundle 'tpope/vim-repeat'
+Bundle 'kien/rainbow_parentheses.vim'
 
 " Color Schemes
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-distinguished'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'twilight'
+Bundle 'sjl/badwolf'
 
 " Commands
 Bundle 'tpope/vim-surround'
@@ -117,6 +119,8 @@ let mapleader=","
 " Platform Specific Configuration
 " ----------------------------------------
 
+set nocursorline
+
 if has('win32') || has('win64')
   " Windows
   source $VIMRUNTIME/mswin.vim
@@ -127,12 +131,14 @@ if has('win32') || has('win64')
   " Set height and width on Windows
   set lines=60
   set columns=120
+	
+	set cursorline
 
   " Windows has a nasty habit of launching gVim in the wrong working directory
   cd ~
 elseif has('gui_macvim')
   " MacVim
-
+	set cursorline
   set guifont=Menlo\ Regular:h12
   " Hide Toolbar in MacVim
   if has("gui_running")
@@ -155,16 +161,16 @@ set colorcolumn=80
 if has('unix') && !has('gui_macvim')
   if $TERM == 'xterm-256color'
     " Neato, 256 color terminal. We can use ir_black_mod
-    colorscheme distinguished
+    colorscheme badwolf
   else
     set term=xterm
 		set t_Co=256
 		let g:CSApprox_verbose_level=0
-    colorscheme distinguished
+    colorscheme badwolf
   endif
 else
   " We're good if not on unix or in MacVim
-  colorscheme distinguished
+  colorscheme badwolf
 endif
 
 " ---------------
@@ -183,7 +189,6 @@ set nowrap  " Line wrapping off
 set laststatus=2  " Always show the statusline
 set cmdheight=2
 set relativenumber " I think I like these more still but it may not exist
-set cursorline
 set linespace=0
 
 " ---------------
@@ -200,6 +205,8 @@ set timeoutlen=500     " Time to wait for a command (after leader for example)
 set foldlevelstart=99  " Remove folds
 set formatoptions=crql
 set nofoldenable
+set ofu=syntaxcomplete#Complete
+
 
 if has ("unix") && "Darwin" != system("echo -n \"$(uname)\"")
 	" on Linux use + register for copy-paste
@@ -290,9 +297,22 @@ nmap <silent> <C-j> :wincmd j<CR>
 nmap <silent> <C-k> :wincmd k<CR>
 nmap <silent> <C-l> :wincmd l<CR>
 
+" Toggle show tabs and trailing spaces (,c)
+set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
+set fcs=fold:-
+nnoremap <silent> <leader>c :set nolist!<CR>)
+
 " Fixes common typos
 command W w
 command Q q
+
+" Indent/unident block (,]) (,[)
+nnoremap <leader>] >i{<CR>
+nnoremap <leader>[ <i{<CR>
+
+" Paste toggle (,p)
+set pastetoggle=<leader>p
+map <leader>p :set invpaste paste?<CR>)
 
 " Removes doc lookup binding because it's easy to fat finger
 nmap K k
@@ -360,6 +380,9 @@ imap <Leader>k <Esc>lki
 " Map <leader>f to split horizontally, and move to bottom window
 nnoremap <Leader>f <C-w>v<C-w>l
 
+" Insert newline
+map <leader><Enter> o<ESC>
+
 " Turn off search results if you press the spacebar
 nmap <SPACE> <SPACE>:noh<CR>
 
@@ -369,6 +392,9 @@ cmap cd. lcd %:p:h
 
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
+
+" Search and replace word under cursor (,*)
+nnoremap <leader>* :%s/\<<C-r><C-w>\>//<Left>
 
 " ---------------
 " Leader
@@ -399,10 +425,11 @@ let g:indent_guides_color_change_percent=5
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 
-if has('unix') && !has('gui_macvim')
+if has('unix') && !has('gui_macvim') && !has('win32') && !has('win64')
+	let g:indent_guides_enable_on_vim_startup=0
 	if $TERM == 'xterm-256color'
-	" Make the guides smaller since they will be crazy visible in 256color mode
-	let g:indent_guides_guide_size=1
+		" Make the guides smaller since they will be crazy visible in 256color mode
+		let g:indent_guides_guide_size=1
 	else
 		autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#212121   ctermbg=3
 		autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#404040 ctermbg=4
@@ -411,7 +438,10 @@ if has('unix') && !has('gui_macvim')
 	endif
 endif
 
-
+"" ---------------
+" Rainbow Parenthesis
+" ---------------
+nnoremap <leader>rp :RainbowParenthesesToggle<CR>
 
 "" ---------------
 " UndoTree
@@ -504,6 +534,11 @@ let NERDTreeShowHidden=1
 let NERDTreeQuitOnOpen=1
 let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
+" NERD Commenter
+let NERDSpaceDelims=1
+let NERDCompactSexyComs=1
+let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightAlt': '|#' } }
+
 " ---------------
 " Debugger
 " ---------------
@@ -525,6 +560,11 @@ nnoremap <silent> <D-r> :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
 			\ 'dir':  '\.git$\|\.hg$\|\.svn$',
 			\ 'file': '\.exe$\|\.so$\|\.dll$' }
+
+let g:ctrlp_match_window_bottom = 0 " Show at top of window
+let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
+let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
+let g:ctrlp_split_window = 1 " <CR> = New Tab
 
 " ---------------
 " Tags
@@ -789,6 +829,15 @@ nmap <silent> <leader>z :QuickSpellingFix<CR>
 	:autocmd BufNewFile,BufRead *.phpt set ft=php
 	:autocmd BufNewFile,BufRead *.phtml set ft=php
 	:autocmd BufNewFile,BufRead *.phps set ft=php
+
+	" JSON
+	au BufRead,BufNewFile *.json set ft=json syntax=javascript
+
+	" Jade
+	au BufRead,BufNewFile *.jade set ft=jade syntax=jade
+
+	" ZSH
+	au BufRead,BufNewFile .zsh_rc,.functions,.commonrc set ft=zsh
 
 " }
 
