@@ -86,6 +86,9 @@ Bundle 'docunext/closetag.vim'
 Bundle 'scrooloose/nerdcommenter'
 if executable('ctags')
 	Bundle 'majutsushi/tagbar'
+	if executable('phpctags')
+		Bundle 'techlivezheng/tagbar-phpctags' 
+	endif
 endif
 Bundle 'tpope/vim-markdown'
 Bundle 'spf13/vim-preview'
@@ -445,6 +448,8 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
+" AutoComplPop like behavior.
+let g:neocomplcache_enable_auto_select = 1
 
 
 " ---------------
@@ -566,25 +571,25 @@ let g:session_autoload=1
 nnoremap <leader>os :OpenSession<CR>
 
 " ---------------
-" TagBar
-" ---------------
-nnoremap <silent> <leader>tt :TagbarToggle<CR>
+	" TagBar
+	" ---------------
+	nnoremap <silent> <leader>tb :TagbarToggle<CR>
 
-" ---------------
-" Tabular
-" ---------------
-nmap <Leader>t= :Tabularize /=<CR>
-vmap <Leader>t= :Tabularize /=<CR>
-nmap <Leader>t: :Tabularize /:\zs<CR>
-vmap <Leader>t: :Tabularize /:\zs<CR>
-nmap <Leader>t:: :Tabularize /:\zs<CR>
-vmap <Leader>t:: :Tabularize /:\zs<CR>
-nmap <Leader>t, :Tabularize /,\zs<CR>
-vmap <Leader>t, :Tabularize /,\zs<CR>
-nmap <Leader>t> :Tabularize /=>\zs<CR>
-vmap <Leader>t> :Tabularize /=>\zs<CR>
-nmap <Leader>t<Bar> :Tabularize /<Bar><CR>
-vmap <Leader>t<Bar> :Tabularize /<Bar><CR>
+	" ---------------
+	" Tabular
+	" ---------------
+	nmap <Leader>t= :Tabularize /=<CR>
+	vmap <Leader>t= :Tabularize /=<CR>
+	nmap <Leader>t: :Tabularize /:\zs<CR>
+	vmap <Leader>t: :Tabularize /:\zs<CR>
+	nmap <Leader>t:: :Tabularize /:\zs<CR>
+	vmap <Leader>t:: :Tabularize /:\zs<CR>
+	nmap <Leader>t, :Tabularize /,\zs<CR>
+	vmap <Leader>t, :Tabularize /,\zs<CR>
+	nmap <Leader>t> :Tabularize /=>\zs<CR>
+	vmap <Leader>t> :Tabularize /=>\zs<CR>
+	nmap <Leader>t<Bar> :Tabularize /<Bar><CR>
+	vmap <Leader>t<Bar> :Tabularize /<Bar><CR>
 
 " ---------------
 " Vundle
