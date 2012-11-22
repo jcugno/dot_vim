@@ -478,8 +478,9 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
-" AutoComplPop like behavior.
-let g:neocomplcache_enable_auto_select = 1
+" Tab will select the next element AND we don't highlight that first element 
+imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:neocomplcache_enable_auto_select = 0
 
 
 " ---------------
