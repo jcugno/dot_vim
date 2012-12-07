@@ -107,7 +107,7 @@ Bundle 'DBGp-Remote-Debugger-Interface'
 " Bundle 'mutewinter/LustyJuggler'
 " Bundle 'gregsexton/MatchTag'
 " Bundle 'FuzzyFinder'
-" Bundle "ervandew/supertab"
+" Bundle 'ervandew/supertab'
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
 
@@ -139,8 +139,9 @@ if has('win32') || has('win64')
 elseif has('gui_macvim')
   " MacVim
 	set cursorline
-  set guifont=Menlo\ Regular:h12
-  " Hide Toolbar in MacVim
+  " set guifont=Menlo\ Regular:h12
+  set guifont=Bitstream\ Vera\ Sans\ Mono:h12
+	" Hide Toolbar in MacVim
   if has("gui_running")
     set guioptions=egmrt
   endif
@@ -324,10 +325,6 @@ nmap <silent> <leader>ul :t.\|s/./=/g\|:nohls<cr>
 " Make line completion easier
 imap <C-l> <C-x><C-l>
 
-" Similarly, : takes two keystrokes, ; takes one; map the latter to the former
-" in normal mode to get to the commandline faster
-nnoremap ; :
-
 " Wrapped lines goes down/up to next row, rather than next line in file.
 nnoremap j gj
 nnoremap k gk
@@ -400,7 +397,7 @@ nnoremap <leader>* :%s/\<<C-r><C-w>\>//<Left>
 " Leader
 " ---------------
 
-" The escape key is a long ways away. This maps it to the sequence ';;'
+" The escape key is a long ways away. This maps it to the sequence 'jj'
 :map! jj <esc>
 
 nmap <silent> <leader>ss :set spell!<CR>
@@ -540,6 +537,9 @@ let NERDSpaceDelims=1
 let NERDCompactSexyComs=1
 let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightAlt': '|#' } }
 
+" delimitMate
+let delimitMate_autoclose = 0
+
 " ---------------
 " Debugger
 " ---------------
@@ -559,13 +559,14 @@ let g:ctrlp_working_path_mode = 2
 nnoremap <silent> <leader>t :CtrlP<CR>
 nnoremap <silent> <D-r> :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
-			\ 'dir':  '\.git$\|\.hg$\|\.svn$',
+			\ 'dir':  '\.git$\|\.hg$\|\.svn$\|\node_modules$',
 			\ 'file': '\.exe$\|\.so$\|\.dll$' }
 
 let g:ctrlp_match_window_bottom = 0 " Show at top of window
 let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
-let g:ctrlp_split_window = 1 " <CR> = New Tab
+" let g:ctrlp_split_window = 1 " <CR> = New Tab
+let g:ctrlp_max_height = 25 " Show 25 results
 
 " ---------------
 " Tags
