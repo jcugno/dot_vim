@@ -63,13 +63,10 @@ Bundle 'Raimondi/delimitMate'
 Bundle 'godlygeek/tabular'
 
 " Automatic Helpers
-Bundle 'xolox/vim-session'
 Bundle 'scrooloose/syntastic'
 
 " Snippets & AutoComplete
 Bundle 'Shougo/neocomplcache'
-Bundle "garbas/vim-snipmate"
-Bundle 'honza/snipmate-snippets'
 
 " Language Additions
 " PHP
