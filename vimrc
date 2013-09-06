@@ -35,12 +35,14 @@ Bundle 'bufexplorer.zip'
 " UI Additions
 Bundle 'scrooloose/nerdtree'
 Bundle 'taglist.vim'
-Bundle 'Lokaltog/vim-powerline'
+Bundle 'bling/vim-airline'
 Bundle 'Lokaltog/vim-easymotion'
-Bundle 'nathanaelkane/vim-indent-guides'
+" Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'vim-scripts/buftabs'
 Bundle 'tpope/vim-repeat'
 Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'nono/vim-handlebars'
+Bundle 'digitaltoad/vim-jade'
 
 " Color Schemes
 Bundle 'jcugno/all-colors-pack'
@@ -57,7 +59,6 @@ if executable('ack-grep')
 elseif executable('ack')
   Bundle 'mileszs/ack.vim'
 endif
-Bundle 'jcugno/vim-phpunit'
 Bundle 'mattn/zencoding-vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'godlygeek/tabular'
@@ -171,6 +172,8 @@ else
   colorscheme badwolf
 endif
 
+set ttimeoutlen=50
+
 " ---------------
 " Backups
 " ---------------
@@ -205,13 +208,14 @@ set formatoptions=crql
 set nofoldenable
 set ofu=syntaxcomplete#Complete
 
-
 if has ("unix") && "Darwin" != system("echo -n \"$(uname)\"")
 	" on Linux use + register for copy-paste
 	set clipboard=unnamedplus
 else
-	" one mac and windows, use * register for copy-paste
-	set clipboard=unnamed
+	if $TMUX == ''
+		" one mac and windows, use * register for copy-paste
+		set clipboard=unnamed
+	endif
 endif
 
 " Use viminfo
@@ -231,7 +235,7 @@ set shiftwidth=2
 set textwidth=0
 set shiftwidth=2  " Tabs under smart indent
 set cindent
-set noexpandtab
+set expandtab
 set backspace=2
 set encoding=utf-8
 
@@ -296,9 +300,10 @@ nmap <silent> <C-k> :wincmd k<CR>
 nmap <silent> <C-l> :wincmd l<CR>
 
 " Toggle show tabs and trailing spaces (,c)
-set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
+set listchars=tab:▸\ ,trail:·
 set fcs=fold:-
 nnoremap <silent> <leader>c :set nolist!<CR>)
+set list
 
 " Fixes common typos
 command W w
@@ -556,7 +561,7 @@ let g:ctrlp_working_path_mode = 2
 nnoremap <silent> <leader>t :CtrlP<CR>
 nnoremap <silent> <D-r> :CtrlPMRU<CR>
 let g:ctrlp_custom_ignore = {
-			\ 'dir':  '\.git$\|\.hg$\|\.svn$\|\node_modules$',
+			\ 'dir':  '\v[\/]\.(git|hg|svn)|node_modules|bower_components$',
 			\ 'file': '\.exe$\|\.so$\|\.dll$' }
 
 let g:ctrlp_match_window_bottom = 0 " Show at top of window
