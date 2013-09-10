@@ -31,6 +31,7 @@ Bundle 'tomtom/tlib_vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'mbbill/undotree'
 Bundle 'bufexplorer.zip'
+Bundle 'tpope/vim-fugitive'
 
 " UI Additions
 Bundle 'scrooloose/nerdtree'
@@ -47,7 +48,7 @@ Bundle 'qstrahl/vim-matchmaker'
 
 
 " Color Schemes
-Bundle 'biskark/vim-ultimate-colorscheme-utility'
+Bundle 'vim-scripts/ScrollColors'
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-distinguished'
 Bundle 'nanotech/jellybeans.vim'
@@ -159,7 +160,7 @@ endif
 " ---------------
 set background=dark
 set t_Co=256 " Ensure we have full spectrum of colors
-set colorcolumn=80
+set colorcolumn=0
 
 " Conditionally Set colorscheme
 if has('unix') && !has('gui_macvim')
