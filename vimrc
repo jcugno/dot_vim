@@ -43,8 +43,11 @@ Bundle 'tpope/vim-repeat'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'digitaltoad/vim-jade'
+Bundle 'qstrahl/vim-matchmaker'
+
 
 " Color Schemes
+Bundle 'biskark/vim-ultimate-colorscheme-utility'
 Bundle 'jcugno/all-colors-pack'
 Bundle 'Lokaltog/vim-distinguished'
 Bundle 'nanotech/jellybeans.vim'
@@ -65,6 +68,8 @@ Bundle 'godlygeek/tabular'
 
 " Automatic Helpers
 Bundle 'scrooloose/syntastic'
+Bundle "xolox/vim-session"
+Bundle 'xolox/vim-misc'
 
 " Snippets & AutoComplete
 Bundle 'Shougo/neocomplcache'
@@ -443,6 +448,12 @@ endif
 nnoremap <leader>rp :RainbowParenthesesToggle<CR>
 
 "" ---------------
+" Matchmaker
+" ---------------
+let g:matchmaker_enable_startup = 1
+hi Matchmaker guibg=#5f00af ctermbg=0
+
+"" ---------------
 " UndoTree
 " ---------------
 nnoremap <Leader>u :UndotreeToggle<CR>
@@ -610,8 +621,8 @@ let Tlist_Display_Tag_Scope = 1
 " ---------------
 " Session
 " ---------------
-let g:session_autosave=1
-let g:session_autoload=1
+let g:session_autosave=0
+let g:session_autoload=0
 nnoremap <leader>os :OpenSession<CR>
 
 " ---------------
