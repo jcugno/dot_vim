@@ -31,7 +31,7 @@ Bundle 'tomtom/tlib_vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'mbbill/undotree'
 Bundle 'bufexplorer.zip'
-Bundle 'tpope/vim-fugitive'
+Bundle 'BufOnly.vim'
 
 " UI Additions
 Bundle 'scrooloose/nerdtree'
@@ -101,14 +101,13 @@ Bundle 'spf13/vim-preview'
 
 
 " Debugging
-Bundle 'DBGp-Remote-Debugger-Interface'
+" Bundle 'DBGp-Remote-Debugger-Interface'
 
 " Retired but may be useful in the future
 " Bundle 'L9'
 " Bundle 'tpope/vim-fugitive'
 " Bundle 'godlygeek/csapprox'
 " Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'mutewinter/LustyJuggler'
 " Bundle 'gregsexton/MatchTag'
 " Bundle 'FuzzyFinder'
 " Bundle 'ervandew/supertab'
@@ -160,7 +159,7 @@ endif
 " ---------------
 set background=dark
 set t_Co=256 " Ensure we have full spectrum of colors
-set colorcolumn=0
+set colorcolumn=
 
 " Conditionally Set colorscheme
 if has('unix') && !has('gui_macvim')
@@ -175,7 +174,7 @@ if has('unix') && !has('gui_macvim')
   endif
 else
   " We're good if not on unix or in MacVim
-  colorscheme badwolf
+  colorscheme molokai
 endif
 
 set ttimeoutlen=50
@@ -204,6 +203,7 @@ set linespace=0
 syntax enable
 set autoread           " Automatically reload changes if detected
 set wildmenu           " Turn on WiLd menu
+set wildmode=list:longest
 set hidden             " Change buffer - without saving
 set history=1000        " Number of things to remember in history.
 set cf                 " Enable error files & error jumping.
@@ -224,11 +224,29 @@ else
 	endif
 endif
 
+"===================================================================================
+" Session Handling Behaviour:
+"----------------
+
+" Don't persist options and mappings because it can corrupt sessions.
+set sessionoptions-=options
+
+" Always persist Vim's window size and position.
+set sessionoptions+=resize
+set sessionoptions+=winpos
+
+set backup
+set undofile
+
+set undodir=~/.vim/tmp/undo/
+set backupdir=~/.vim/tmp/backup/
+set directory=~/.vim/tmp/swap/
+
 " Use viminfo
-set viminfo='100,f1,\"1000,:100,/100,h,%
+" set viminfo='100,f1,\"1000,:100,/100,h,%
 
 " Remember settings between sessions
-set viminfo='400,f1,"500,h,/100,:100,<500
+" set viminfo='400,f1,"500,h,/100,:100,<500
 
 let bash_is_sh=1 " this makes CLI integration better.
 
@@ -311,10 +329,6 @@ set fcs=fold:-
 nnoremap <silent> <leader>c :set nolist!<CR>)
 set list
 
-" Fixes common typos
-command W w
-command Q q
-
 " Indent/unident block (,]) (,[)
 nnoremap <leader>] >i{<CR>
 nnoremap <leader>[ <i{<CR>
@@ -391,10 +405,6 @@ map <leader><Enter> o<ESC>
 " Turn off search results if you press the spacebar
 nmap <SPACE> <SPACE>:noh<CR>
 
-" Change Working Directory to that of the current file
-cmap cwd lcd %:p:h
-cmap cd. lcd %:p:h
-
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
@@ -419,29 +429,6 @@ nmap <silent> <leader>sv :vsplit<CR>
 " ----------------------------------------
 " Plugin Configuration
 " ----------------------------------------
-
-" ---------------
-" indent_guides
-" ---------------
-" Before the sp13 changes..
-let g:indent_guides_auto_colors=1
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_color_change_percent=5
-let g:indent_guides_start_level = 2
-let g:indent_guides_guide_size = 1
-
-if has('unix') && !has('gui_macvim') && !has('win32') && !has('win64')
-	let g:indent_guides_enable_on_vim_startup=0
-	if $TERM == 'xterm-256color'
-		" Make the guides smaller since they will be crazy visible in 256color mode
-		let g:indent_guides_guide_size=1
-	else
-		autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=#212121   ctermbg=3
-		autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#404040 ctermbg=4
-		" Turn off the guides when 256color mode isn't available
-"     let g:indent_guides_enable_on_vim_startup=0
-	endif
-endif
 
 "" ---------------
 " Rainbow Parenthesis
@@ -508,7 +495,7 @@ let g:phpunit_params = '--stop-on-failure --configuration tests/phpunit.xml'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=0
-let g:syntastic_javascript_checker='jshint'
+let g:syntastic_javascript_checkers = ['jshint']
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -543,7 +530,7 @@ let NERDTreeChDirMode=2
 let NERDTreeBookmarksFile = $HOME . "/.NERDTreeBookmarks"
 let NERDTreeShowBookmarks=1
 let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
+let NERDTreeQuitOnOpen=0
 let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
 " NERD Commenter
@@ -570,13 +557,14 @@ map <S-K> :bprevious<Cr>
 " ctrlp
 " ---------------
 let g:ctrlp_working_path_mode = 2
-nnoremap <silent> <leader>t :CtrlP<CR>
+nnoremap <silent> <leader>t :CtrlPCurWD<CR>
 nnoremap <silent> <D-r> :CtrlPMRU<CR>
+nnoremap <silent> <leader>l :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = {
 			\ 'dir':  '\v[\/]\.(git|hg|svn)|node_modules|bower_components$',
 			\ 'file': '\.exe$\|\.so$\|\.dll$' }
 
-let g:ctrlp_match_window_bottom = 0 " Show at top of window
+let g:ctrlp_match_window_bottom = 1 " Show at top of window
 let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
 let g:ctrlp_jump_to_buffer = 2 " Jump to tab AND buffer if already open
 " let g:ctrlp_split_window = 1 " <CR> = New Tab
@@ -667,7 +655,6 @@ let g:snips_trigger_key='<c-space>'
 " Make it so AutoCloseTag works for xml and xhtml files as well
 au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
 nmap <Leader>ac <Plug>ToggleAutoCloseMappings
-
 
 " ----------------------------------------
 " Functions
@@ -761,6 +748,17 @@ endif " endif has('ruby')
 " ---------------
 map <leader>ws :%s/\s\+$//e<CR>
 command! FixTrailingWhiteSpace :%s/\s\+$//e
+
+function! s:StripWhiteSpaces()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    :%s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfunction
+
+autocmd BufWritePre * StripWhiteSpace
+command! -range=% StripWhiteSpaces :silent call <SID>StripWhiteSpaces()
 
 " ---------------
 " Quick spelling fix (first item in z= list)

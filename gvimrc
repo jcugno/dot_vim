@@ -6,9 +6,9 @@
 " :set guifont=Menlo\ Regular:h11
 " :set guifont=Monico:h11
 :set guifont=Bitstream\ Vera\ Sans\ Mono:h12
-:set lines=55
-:set columns=127
-:set transparency=2
+:set lines=99
+:set columns=180
+:set transparency=0
 
 " Power mgmt savings -- turn off blinking cursor
 let &guicursor = &guicursor . ",a:blinkon0"
