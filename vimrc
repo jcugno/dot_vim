@@ -93,7 +93,7 @@ Bundle 'scrooloose/nerdcommenter'
 if executable('ctags')
 	Bundle 'majutsushi/tagbar'
 	if executable('phpctags')
-		Bundle 'techlivezheng/tagbar-phpctags' 
+		Bundle 'techlivezheng/tagbar-phpctags'
 	endif
 endif
 Bundle 'tpope/vim-markdown'
@@ -134,7 +134,7 @@ if has('win32') || has('win64')
   " Set height and width on Windows
   set lines=60
   set columns=120
-	
+
 	set cursorline
 
   " Windows has a nasty habit of launching gVim in the wrong working directory
@@ -313,6 +313,10 @@ set scrolloff=3
 " Better complete options to speed it up
 set complete=.,w,b,u,U
 
+" Fixes common typos
+command! W w
+command! Q q
+
 " ----------------------------------------
 " Bindings
 " ----------------------------------------
@@ -476,7 +480,7 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length.
 let g:neocomplcache_min_syntax_length = 3
-" Tab will select the next element AND we don't highlight that first element 
+" Tab will select the next element AND we don't highlight that first element
 imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 let g:neocomplcache_enable_auto_select = 0
 
@@ -547,7 +551,7 @@ let delimitMate_autoclose = 0
 let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
 
 " ---------------
-" Buffer explorer 
+" Buffer explorer
 " ---------------
 nmap <leader>b :BufExplorer<CR>
 map <S-J> :bnext<CR>
