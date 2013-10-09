@@ -45,6 +45,8 @@ Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'qstrahl/vim-matchmaker'
+Bundle 'mattboehm/vim-unstack'
+Bundle 'mattboehm/vim-accordion'
 
 
 " Color Schemes
@@ -780,6 +782,19 @@ endfunction
 
 command! QuickSpellingFix call QuickSpellingFix()
 nmap <silent> <leader>z :QuickSpellingFix<CR>
+
+" Filters the args list down to only the files in the quickfix buffer. Useful for
+" doing project wide search / replace
+command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
+function! QuickfixFilenames()
+  " Building a hash ensures we get each buffer only once
+  let buffer_numbers = {}
+  for quickfix_item in getqflist()
+    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
+  endfor
+  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
+endfunction
+
 
 " put all this in your .vimrc or a plugin file. This seems to allow you to set
 	" the same tab / space options in a file. Use with caution?
