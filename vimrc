@@ -47,7 +47,7 @@ Bundle 'digitaltoad/vim-jade'
 Bundle 'qstrahl/vim-matchmaker'
 Bundle 'mattboehm/vim-unstack'
 Bundle 'mattboehm/vim-accordion'
-
+Bundle 'heartsentwined/vim-emblem'
 
 " Color Schemes
 Bundle 'vim-scripts/ScrollColors'
