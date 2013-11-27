@@ -30,23 +30,24 @@ Bundle 'tomtom/tlib_vim'
 " Navigation
 Bundle 'kien/ctrlp.vim'
 Bundle 'mbbill/undotree'
-Bundle 'bufexplorer.zip'
+" Bundle 'bufexplorer.zip'
 Bundle 'BufOnly.vim'
+" Bundle 'terryma/vim-multiple-cursors'
 
 " UI Additions
 Bundle 'scrooloose/nerdtree'
-Bundle 'taglist.vim'
+" Bundle 'taglist.vim'
 Bundle 'bling/vim-airline'
 Bundle 'Lokaltog/vim-easymotion'
 " Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'vim-scripts/buftabs'
+" Bundle 'vim-scripts/buftabs'
 Bundle 'tpope/vim-repeat'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'qstrahl/vim-matchmaker'
-Bundle 'mattboehm/vim-unstack'
-Bundle 'mattboehm/vim-accordion'
+" Bundle 'mattboehm/vim-unstack'
+" Bundle 'mattboehm/vim-accordion'
 Bundle 'heartsentwined/vim-emblem'
 
 " Color Schemes
@@ -56,6 +57,7 @@ Bundle 'Lokaltog/vim-distinguished'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'twilight'
 Bundle 'sjl/badwolf'
+Bundle 'altercation/vim-colors-solarized'
 
 " Commands
 Bundle 'tpope/vim-surround'
@@ -65,22 +67,23 @@ if executable('ack-grep')
 elseif executable('ack')
   Bundle 'mileszs/ack.vim'
 endif
-Bundle 'mattn/zencoding-vim'
-Bundle 'Raimondi/delimitMate'
+
+" Bundle 'mattn/zencoding-vim'
+" Bundle 'Raimondi/delimitMate'
 Bundle 'godlygeek/tabular'
 
 " Automatic Helpers
 Bundle 'scrooloose/syntastic'
-Bundle "xolox/vim-session"
-Bundle 'xolox/vim-misc'
+" Bundle "xolox/vim-session"
+" Bundle 'xolox/vim-misc'
 
 " Snippets & AutoComplete
-Bundle 'Shougo/neocomplcache'
+" Bundle 'Shougo/neocomplcache'
 
 " Language Additions
 " PHP
-Bundle 'jcugno/PIV'
-Bundle 'shawncplus/phpcomplete.vim'
+" Bundle 'jcugno/PIV'
+" Bundle 'shawncplus/phpcomplete.vim'
 
 " Javascript
 Bundle 'pangloss/vim-javascript'
@@ -107,7 +110,7 @@ Bundle 'spf13/vim-preview'
 
 " Retired but may be useful in the future
 " Bundle 'L9'
-" Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-fugitive'
 " Bundle 'godlygeek/csapprox'
 " Bundle 'Lokaltog/vim-easymotion'
 " Bundle 'gregsexton/MatchTag'
@@ -178,6 +181,17 @@ else
   " We're good if not on unix or in MacVim
   colorscheme molokai
 endif
+
+
+" ------------------
+" Cursor
+" ------------------
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+au InsertLeave * hi Cursor guibg=red
+au InsertEnter * hi Cursor guibg=green
+
 
 set ttimeoutlen=50
 
@@ -484,6 +498,8 @@ let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 " Tab will select the next element AND we don't highlight that first element
 imap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+
 let g:neocomplcache_enable_auto_select = 0
 
 
