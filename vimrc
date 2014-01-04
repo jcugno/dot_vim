@@ -572,7 +572,6 @@ let g:pathMap = '/mnt:/Users/jcugno/Documents/buzz_sites'
 " Buffer explorer
 " ---------------
 nmap <leader>b :BufExplorer<CR>
-map <S-J> :bnext<CR>
 map <S-K> :bprevious<Cr>
 
 " ---------------
