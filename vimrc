@@ -37,18 +37,13 @@ Bundle 'BufOnly.vim'
 
 " UI Additions
 Bundle 'scrooloose/nerdtree'
-" Bundle 'taglist.vim'
 Bundle 'bling/vim-airline'
 Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'nathanaelkane/vim-indent-guides'
-" Bundle 'vim-scripts/buftabs'
 Bundle 'tpope/vim-repeat'
 Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'nono/vim-handlebars'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'qstrahl/vim-matchmaker'
-" Bundle 'mattboehm/vim-unstack'
-" Bundle 'mattboehm/vim-accordion'
 Bundle 'heartsentwined/vim-emblem'
 
 " Color Schemes
@@ -71,8 +66,6 @@ elseif executable('ack')
   Bundle 'mileszs/ack.vim'
 endif
 
-" Bundle 'mattn/zencoding-vim'
-" Bundle 'Raimondi/delimitMate'
 Bundle 'godlygeek/tabular'
 
 " Automatic Helpers
@@ -81,7 +74,7 @@ Bundle 'scrooloose/syntastic'
 " Bundle 'xolox/vim-misc'
 
 " Snippets & AutoComplete
-" Bundle 'Shougo/neocomplcache'
+Bundle 'Valloric/YouCompleteMe'
 
 " Language Additions
 " PHP
