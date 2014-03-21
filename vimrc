@@ -74,7 +74,7 @@ Bundle 'scrooloose/syntastic'
 " Bundle 'xolox/vim-misc'
 
 " Snippets & AutoComplete
-Bundle 'Valloric/YouCompleteMe'
+" Bundle 'Valloric/YouCompleteMe'
 
 " Language Additions
 " PHP
