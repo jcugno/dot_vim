@@ -580,7 +580,7 @@ nnoremap <silent> <D-r> :CtrlPMRU<CR>
 nnoremap <silent> <leader>l :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn|tmp)|node_modules|bower_components|transpiled|tmp$',
-  \ 'file': '\.exe$\|\.so$\|\.dll$' }
+  \ 'file': '\.class$\|.exe$\|\.so$\|\.dll$' }
 
 let g:ctrlp_match_window_bottom = 1 " Show at top of window
 let g:ctrlp_mru_files = 1 " Enable Most Recently Used files feature
