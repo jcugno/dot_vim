@@ -101,6 +101,8 @@ Bundle 'tpope/vim-markdown'
 Bundle 'spf13/vim-preview'
 
 
+Bundle 'taglist.vim'
+
 " Debugging
 " Bundle 'DBGp-Remote-Debugger-Interface'
 
@@ -674,6 +676,13 @@ let g:snips_trigger_key='<c-space>'
 au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
 nmap <Leader>ac <Plug>ToggleAutoCloseMappings
 
+" ---------------
+" Eclim
+" ---------------
+nmap <Leader>y :JavaSearchContext <CR>
+nmap <Leader>o :JavaImportOrganize <CR>
+nmap <Leader>r :JavaSearch -x implementors <CR>
+
 " ----------------------------------------
 " Functions
 " ----------------------------------------
@@ -743,7 +752,7 @@ if !exists("*OpenURL")
 endif
 
 command! OpenUrl call OpenURL()
-nnoremap <leader>o :call OpenURL()<CR>
+" nnoremap <leader>o :call OpenURL()<CR>
 
 " ---------------
 " Paste link with Title
@@ -775,8 +784,8 @@ function! s:StripWhiteSpaces()
     call setreg('/', old_query)
 endfunction
 
-autocmd BufWritePre * StripWhiteSpace
-command! -range=% StripWhiteSpaces :silent call <SID>StripWhiteSpaces()
+" autocmd BufWritePre * StripWhiteSpace
+" command! -range=% StripWhiteSpaces :silent call <SID>StripWhiteSpaces()
 
 " ---------------
 " Quick spelling fix (first item in z= list)
