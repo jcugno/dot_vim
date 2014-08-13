@@ -679,6 +679,7 @@ nmap <Leader>ac <Plug>ToggleAutoCloseMappings
 " ---------------
 " Eclim
 " ---------------
+let g:EclimJavascriptIndentDisabled = 1
 nmap <Leader>y :JavaSearchContext <CR>
 nmap <Leader>o :JavaImportOrganize <CR>
 nmap <Leader>r :JavaSearch -x implementors <CR>
