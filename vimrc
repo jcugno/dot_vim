@@ -785,8 +785,8 @@ function! s:StripWhiteSpaces()
     call setreg('/', old_query)
 endfunction
 
-" autocmd BufWritePre * StripWhiteSpace
-" command! -range=% StripWhiteSpaces :silent call <SID>StripWhiteSpaces()
+autocmd BufWritePre * StripWhiteSpace
+command! -range=% StripWhiteSpaces :silent call <SID>StripWhiteSpaces()
 
 " ---------------
 " Quick spelling fix (first item in z= list)
