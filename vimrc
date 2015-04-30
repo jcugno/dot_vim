@@ -517,6 +517,7 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=0
 let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
