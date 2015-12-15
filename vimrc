@@ -29,7 +29,7 @@ Bundle 'tomtom/tlib_vim'
 
 " Navigation
 Bundle 'ervandew/supertab'
-Bundle 'kien/ctrlp.vim'
+Bundle 'ctrlpvim/ctrlp.vim'
 Bundle 'mbbill/undotree'
 " Bundle 'bufexplorer.zip'
 Bundle 'BufOnly.vim'
@@ -45,6 +45,7 @@ Bundle 'nono/vim-handlebars'
 Bundle 'digitaltoad/vim-jade'
 Bundle 'qstrahl/vim-matchmaker'
 Bundle 'heartsentwined/vim-emblem'
+Bundle 'groenewege/vim-less'
 
 " Color Schemes
 Bundle 'vim-scripts/ScrollColors'
@@ -627,6 +628,12 @@ let Tlist_Close_On_Select = 1
 let Tlist_Process_File_Always = 1
 let Tlist_Display_Prototype = 0
 let Tlist_Display_Tag_Scope = 1
+
+
+" ---------------
+" easymotion
+" ---------------
+nmap s <Plug>(easymotion-s)
 
 " ---------------
 " Session
