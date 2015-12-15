@@ -7,19 +7,6 @@
 5. Install [Vundle](https://github.com/gmarik/vundle) with `git clone http://github.com/gmarik/vundle.git bundle/vundle`
 6. Run Vim and type `:BundleInstall` to install the plugins with Vundle.
 
-## Screenshots
-
-
-**MacVim**
-
-[![MacVim](https://github.com/mutewinter/dot_vim/raw/master/screenshots/MacVim1_small.png)](https://github.com/mutewinter/dot_vim/raw/master/screenshots/MacVim1.png)
-
-
-**Windows gVim**
-
-[![Windows gVim](https://github.com/mutewinter/dot_vim/raw/master/screenshots/Windows1_small.png)](https://github.com/mutewinter/dot_vim/raw/master/screenshots/Windows1.png)
-
-
 ## Requirements
 
 **Mac**
