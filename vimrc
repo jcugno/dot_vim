@@ -60,8 +60,11 @@ Bundle 'zenorocha/dracula-theme'
 
 " Commands
 Bundle 'tpope/vim-surround'
-if executable('ack-grep')
-	let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+if executable('ag')
+  let g:ackprg="ag --vimgrep"
+	Bundle 'mileszs/ack.vim'
+elseif executable('ack-grep')
+  let g:ackprg ='ack-grep --vimgrep'
 	Bundle 'mileszs/ack.vim'
 elseif executable('ack')
   Bundle 'mileszs/ack.vim'
@@ -904,3 +907,6 @@ endfunction
 
 " }
 
+" In the quickfix window, <CR> is used to jump to the error under the
+" " cursor, so undefine the mapping there.
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
