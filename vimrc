@@ -17,107 +17,110 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " let Vundle manage Vundle, required
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " ---------------
-" Plugin Bundles
+" Plugin Plugins
 " ---------------
 
 " Dependencies
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
 
 " Navigation
-Bundle 'ervandew/supertab'
-Bundle 'ctrlpvim/ctrlp.vim'
-Bundle 'mbbill/undotree'
-" Bundle 'bufexplorer.zip'
-Bundle 'BufOnly.vim'
-" Bundle 'terryma/vim-multiple-cursors'
+Plugin 'ervandew/supertab'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'mbbill/undotree'
+" Plugin 'bufexplorer.zip'
+Plugin 'BufOnly.vim'
+" Plugin 'terryma/vim-multiple-cursors'
 
 " UI Additions
-Bundle 'scrooloose/nerdtree'
-Bundle 'bling/vim-airline'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-repeat'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'nono/vim-handlebars'
-Bundle 'digitaltoad/vim-jade'
-Bundle 'qstrahl/vim-matchmaker'
-Bundle 'heartsentwined/vim-emblem'
-Bundle 'groenewege/vim-less'
+Plugin 'scrooloose/nerdtree'
+Plugin 'bling/vim-airline'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'tpope/vim-repeat'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'nono/vim-handlebars'
+Plugin 'digitaltoad/vim-pug'
+Plugin 'qstrahl/vim-matchmaker'
+Plugin 'heartsentwined/vim-emblem'
+Plugin 'groenewege/vim-less'
 
 " Color Schemes
-Bundle 'vim-scripts/ScrollColors'
-Bundle 'jcugno/all-colors-pack'
-Bundle 'Lokaltog/vim-distinguished'
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'twilight'
-Bundle 'sjl/badwolf'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'w0ng/vim-hybrid'
-Bundle 'zenorocha/dracula-theme'
+Plugin 'vim-scripts/ScrollColors'
+Plugin 'jcugno/all-colors-pack'
+Plugin 'Lokaltog/vim-distinguished'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'twilight'
+Plugin 'sjl/badwolf'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'w0ng/vim-hybrid'
+Plugin 'zenorocha/dracula-theme'
 
 " Commands
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 if executable('ag')
   let g:ackprg="ag --vimgrep"
-	Bundle 'mileszs/ack.vim'
+	Plugin 'mileszs/ack.vim'
 elseif executable('ack-grep')
   let g:ackprg ='ack-grep --vimgrep'
-	Bundle 'mileszs/ack.vim'
+	Plugin 'mileszs/ack.vim'
 elseif executable('ack')
-  Bundle 'mileszs/ack.vim'
+  Plugin 'mileszs/ack.vim'
 endif
 
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 
 " Automatic Helpers
-Bundle 'scrooloose/syntastic'
-" Bundle "xolox/vim-session"
-" Bundle 'xolox/vim-misc'
+Plugin 'scrooloose/syntastic'
+" Plugin "xolox/vim-session"
+" Plugin 'xolox/vim-misc'
 
 " Snippets & AutoComplete
-" Bundle 'Valloric/YouCompleteMe'
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " Language Additions
 " PHP
-" Bundle 'jcugno/PIV'
-" Bundle 'shawncplus/phpcomplete.vim'
+" Plugin 'jcugno/PIV'
+" Plugin 'shawncplus/phpcomplete.vim'
 
 " Javascript
-Bundle 'pangloss/vim-javascript'
-Bundle 'leshill/vim-json'
+Plugin 'pangloss/vim-javascript'
+Plugin 'leshill/vim-json'
+Plugin 'isRuslan/vim-es6'
 
 " HTML
-" "Bundle 'amirh/HTML-AutoCloseTag'
-Bundle 'docunext/closetag.vim'
+" "Plugin 'amirh/HTML-AutoCloseTag'
+Plugin 'docunext/closetag.vim'
 
 " General
-Bundle 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdcommenter'
 if executable('ctags')
- " Bundle 'majutsushi/tagbar'
+ " Plugin 'majutsushi/tagbar'
 	if executable('phpctags')
-		Bundle 'techlivezheng/tagbar-phpctags'
+		Plugin 'techlivezheng/tagbar-phpctags'
 	endif
 endif
-Bundle 'tpope/vim-markdown'
-Bundle 'spf13/vim-preview'
+Plugin 'tpope/vim-markdown'
+Plugin 'spf13/vim-preview'
 
 
-Bundle 'taglist.vim'
+Plugin 'taglist.vim'
 
 " Debugging
-" Bundle 'DBGp-Remote-Debugger-Interface'
+" Plugin 'DBGp-Remote-Debugger-Interface'
 
 " Retired but may be useful in the future
-" Bundle 'L9'
-Bundle 'tpope/vim-fugitive'
-" Bundle 'godlygeek/csapprox'
-" Bundle 'Lokaltog/vim-easymotion'
-" Bundle 'gregsexton/MatchTag'
-" Bundle 'FuzzyFinder'
-" Bundle 'ervandew/supertab'
+" Plugin 'L9'
+Plugin 'tpope/vim-fugitive'
+" Plugin 'godlygeek/csapprox'
+" Plugin 'Lokaltog/vim-easymotion'
+" Plugin 'gregsexton/MatchTag'
+" Plugin 'FuzzyFinder'
+" Plugin 'ervandew/supertab'
 
 filetype plugin indent on  " Automatically detect file types. (must turn on after Vundle)
 
@@ -669,16 +672,24 @@ nnoremap <leader>os :OpenSession<CR>
 " ---------------
 " Vundle
 " ---------------
-nmap <Leader>bi :BundleInstall<CR>
-nmap <Leader>bi! :BundleInstall!<CR>
-nmap <Leader>bu :BundleInstall!<CR> " Because this also updates
-nmap <Leader>bc :BundleClean<CR>
+nmap <Leader>bi :PluginInstall<CR>
+nmap <Leader>bi! :PluginInstall!<CR>
+nmap <Leader>bu :PluginInstall!<CR> " Because this also updates
+nmap <Leader>bc :PluginClean<CR>
 
 " ---------------
 " snipMate
 " ---------------
 let g:snips_author = "Jared Cugno"
 let g:snips_trigger_key='<c-space>'
+
+" ---------------
+" Ultsnips
+" ---------------
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " ---------------
 " AutoCloseTag
@@ -900,7 +911,7 @@ endfunction
 	au BufRead,BufNewFile *.json set ft=json syntax=javascript
 
 	" Jade
-	au BufRead,BufNewFile *.jade set ft=jade syntax=jade
+  autocmd BufNewFile,BufRead *.jade set filetype=pug
 
 	" ZSH
 	au BufRead,BufNewFile .zsh_rc,.functions,.commonrc set ft=zsh
