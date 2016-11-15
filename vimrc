@@ -39,6 +39,7 @@ Plugin 'BufOnly.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'Lokaltog/vim-easymotion'
+Plugin 'justinmk/vim-sneak'
 Plugin 'tpope/vim-repeat'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'nono/vim-handlebars'
@@ -46,6 +47,7 @@ Plugin 'digitaltoad/vim-pug'
 Plugin 'qstrahl/vim-matchmaker'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'groenewege/vim-less'
+Plugin 'kchmck/vim-coffee-script'
 
 " Color Schemes
 Plugin 'vim-scripts/ScrollColors'
@@ -79,8 +81,8 @@ Plugin 'scrooloose/syntastic'
 
 " Snippets & AutoComplete
 " Track the engine.
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
 
 " Language Additions
 " PHP
@@ -131,6 +133,15 @@ let mapleader=","
 " ----------------------------------------
 " Platform Specific Configuration
 " ----------------------------------------
+
+" Trying to optimize the match paren logic which can take a while. This sets
+" the timeout to 60 ms
+let g:matchparen_timeout=60
+let g:matchparen_insert_timeout=60
+
+" This forces syntax highlighting to stop after 250 columns. This helps speed
+" up files that have a VERY long line such as minified JS
+set synmaxcol=225
 
 set nocursorline
 
@@ -183,8 +194,12 @@ if has('unix') && !has('gui_macvim')
     colorscheme badwolf
   endif
 else
-  " We're good if not on unix or in MacVim
-  colorscheme molokai
+  if has('gui_macvim')
+    colorscheme badwolf
+  else
+   " We're good if not on unix or in MacVim
+    colorscheme molokai
+  endif
 endif
 
 
@@ -639,7 +654,7 @@ let Tlist_Display_Tag_Scope = 1
 " ---------------
 " easymotion
 " ---------------
-nmap s <Plug>(easymotion-s)
+" nmap s <Plug>(easymotion-s)
 
 " ---------------
 " Session
