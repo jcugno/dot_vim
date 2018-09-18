@@ -48,6 +48,7 @@ Plugin 'qstrahl/vim-matchmaker'
 Plugin 'heartsentwined/vim-emblem'
 Plugin 'groenewege/vim-less'
 Plugin 'kchmck/vim-coffee-script'
+Plugin 'hashivim/vim-terraform'
 
 " Color Schemes
 Plugin 'vim-scripts/ScrollColors'
@@ -97,6 +98,7 @@ Plugin 'isRuslan/vim-es6'
 " HTML
 " "Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'docunext/closetag.vim'
+Plugin 'wavded/vim-stylus'
 
 " General
 Plugin 'scrooloose/nerdcommenter'
@@ -538,7 +540,7 @@ let g:phpunit_params = '--stop-on-failure --configuration tests/phpunit.xml'
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_auto_jump=0
-let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
 
 set statusline+=%#warningmsg#
@@ -604,7 +606,7 @@ nnoremap <silent> <leader>t :CtrlPCurWD<CR>
 nnoremap <silent> <D-r> :CtrlPMRU<CR>
 nnoremap <silent> <leader>l :CtrlPBuffer<CR>
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn|tmp)|node_modules|bower_components|transpiled|tmp$',
+  \ 'dir':  '\v[\/]\.(git|hg|svn|tmp)|node_modules|etc|bower_components|transpiled|tmp$',
   \ 'file': '\.class$\|.exe$\|\.so$\|\.dll$' }
 
 let g:ctrlp_match_window_bottom = 1 " Show at top of window
